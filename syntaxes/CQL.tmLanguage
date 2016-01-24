@@ -40,7 +40,7 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(?i:^\s*(create)\s+(aggregate|conversion|keyspace|domain|function|group|with|replication|(unique\s+)?index|language|operator class|operator|rule|schema|sequence|table|tablespace|trigger|type|user|view|with|replication|)\s+)(['"`]?)(\w+)\4</string>
+			<string>(?i:^\s*(create)\s+(index|keyspace|user|table|with|replication|(unique\s+)?index|language|operator class|operator|rule|schema|sequence|table|tablespace|trigger|type|user|view|with|replication|)\s+)(['"`]?)(\w+)\4</string>
 			<key>name</key>
 			<string>meta.create.cql</string>
 		</dict>
@@ -59,7 +59,7 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(?i:^\s*(drop)\s+(aggregate|conversion|database|domain|function|group|index|language|operator class|operator|rule|schema|sequence|table|tablespace|trigger|type|user|view))</string>
+			<string>(?i:^\s*(drop)\s+(index|keyspace|table|user))</string>
 			<key>name</key>
 			<string>meta.drop.cql</string>
 		</dict>
@@ -107,7 +107,7 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(?i:^\s*(alter)\s+(aggregate|conversion|database|domain|function|group|index|language|operator class|operator|rule|schema|sequence|table|tablespace|trigger|type|user|view)\s+)</string>
+			<string>(?i:^\s*(alter)\s+(keyspace|table|user)\s+)</string>
 			<key>name</key>
 			<string>meta.alter.cql</string>
 		</dict>
@@ -194,7 +194,7 @@
 			<string>(?xi)
 
 				# normal stuff, capture 1
-				 \b(bigint|bigserial|bit|boolean|box|bytea|cidr|circle|date|double\sprecision|inet|int|integer|line|lseg|macaddr|money|oid|path|point|polygon|real|serial|smallint|sysdate|text|timeuuid)\b
+				 \b(ascii|bigint|blob|boolean|counter|date|decimal|double\sprecision|float|inet|smallint|text|time|timestamp|timeuuid|tinyint|uuid|varint)\b
 
 				# numeric suffix, capture 2 + 3i
 				|\b(bit\svarying|character\s(?:varying)?|tinyint|var\schar|float|interval)\((\d+)\)
