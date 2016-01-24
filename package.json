@@ -2,12 +2,13 @@
 	"name": "cql",
 	"displayName": "vscode-cql",
 	"description": "Cassandra CQL language for VS Code.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"publisher": "LawrenceGrant",
     "repository": {
         "type": "git",
         "url": "https://github.com/lawrencekgrant/vscode-cql"
     },
+    "iconUrl": "./images/cassandra-icon.png",
 	"engines": {
 		"vscode": "^0.10.1"
 	},
