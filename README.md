@@ -3,6 +3,6 @@
 Currently this addon only adds syntax highlighting for .cql files. This just makes it a bit easier to use the .cql extension without resorting to mapping .sql to .cql. It allows you to keep the two separate.
 
 ### For more information
-* [github](https://github.com/lawrencekgrant/cql-vscode)
+* [github](https://github.com/lawrencekgrant/vscode-cql)
 
 **Enjoy!**
