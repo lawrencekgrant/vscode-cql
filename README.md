@@ -8,7 +8,7 @@ Currently Supports:
  - Brackets
  - Comments
  - Intellisense 
-  - All CQL Keywords <small>(SELECT, ALTER, UUID, etc)</small>
+  - All CQL Keywords *(SELECT, ALTER, UUID, etc)*
   - Table Names* 
   - Column Names*
   
@@ -21,6 +21,6 @@ Coming Soon:
 ### For more information
 * [github](https://github.com/lawrencekgrant/vscode-cql)
 
-<small>Table and Column names come from CREATE scripts.</small>
+*(Table and Column names come from CREATE scripts.)*
 
-**Enjoy!** -LG
+**Enjoy!** 
