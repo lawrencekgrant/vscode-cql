@@ -17,9 +17,23 @@
 		"Languages"
 	],
     "activationEvents": [
-        "onLanguage:cql"
+        "onLanguage:cql",
+        "onCommand:cql.about"
     ],
-    "main": "./src/extension",
+    "dependencies": {
+        "vscode-languageserver": "^1.1.3",
+        "vscode-languageclient": "^1.1.2",
+        "vscode" : "*"
+    },
+    "scripts": {
+		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+	},
+	"devDependencies": {
+		"typescript": "^1.6.2",
+		"vscode": "0.10.x"
+	},
+    "main": "./out/src/extension",
 	"contributes": {
 		"languages": [{
 			"id": "cql",
@@ -31,6 +45,21 @@
 			"language": "cql",
 			"scopeName": "source.cql",
 			"path": "./syntaxes/cql.tmLanguage"
-		}]
-	}
+		}],
+        "commands": [{
+            "command": "cql.about",
+            "title": "About CQL"
+        }]
+	},
+    "configuration": {
+        "type": "object",
+        "title": "Example configuration",
+        "properties": {
+            "languageServerExample.maxNumberOfProblems": {
+                "type": "number",
+                "default": 100,
+                "description": "Controls the maximum number of problems produced by the server."
+            }
+        }
+    }
 }
