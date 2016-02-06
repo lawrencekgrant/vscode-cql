@@ -10,23 +10,12 @@ var columnNames = [];
 var completionItemNames = []
 
 export function activate(context: vscode.ExtensionContext) {
-     
-    var items = keywords.map(function(val) {
-        var itm = new vscode.CompletionItem(val);
-        itm.detail = val;
-        itm.filterText = val;
-        itm.insertText = val;
-        itm.kind = vscode.CompletionItemKind.Keyword;
-        return itm;
-    });
-    for(var i = 0; i < items.length; i++)
-    {
-        allCompletionItems.push(items[i]);
-    }
-
-	var disposable = vscode.commands.registerCommand('cql.about', () => {
+    
+    var disposable = vscode.commands.registerCommand('cql.about', () => {
 		vscode.window.showInformationMessage('This is an extension to help me with my projects!!');
 	});
+    
+    context.subscriptions.push(disposable);
     
     var subs = vscode.workspace.onDidOpenTextDocument(function(evt) {
         var source = "";
@@ -67,7 +56,9 @@ export function activate(context: vscode.ExtensionContext) {
             allCompletionItems.push(item);
         }
     });
-	
+    
+    context.subscriptions.push(subs);
+    	
     var disposable2 = vscode.languages.registerCompletionItemProvider("cql",
     {
         resolveCompletionItem(item:vscode.CompletionItem, token: vscode.CancellationToken): vscode.CompletionItem 
@@ -83,8 +74,20 @@ export function activate(context: vscode.ExtensionContext) {
         }
     })
     
-	context.subscriptions.push(disposable, subs);
-    context.subscriptions.push(disposable2);
+	context.subscriptions.push(disposable2);
+    
+    var items = keywords.map(function(val) {
+        var itm = new vscode.CompletionItem(val);
+        itm.detail = val;
+        itm.filterText = val;
+        itm.insertText = val;
+        itm.kind = vscode.CompletionItemKind.Keyword;
+        return itm;
+    });
+    for(var i = 0; i < items.length; i++)
+    {
+        allCompletionItems.push(items[i]);
+    }
 }
 
 export function deactivate() {
