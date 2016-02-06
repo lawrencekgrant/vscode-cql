@@ -16,13 +16,13 @@ Currently Supports:
 Coming Soon:
  - Execute Statements
  - Context for Intellisense
- - More Structure
+ - Better Internal Structure
  - Scan for Symbols
- - More Snippets
+ - Search Cassandra for symbols
  - Better Syntax Highlighting
 
 ### For more information
-* [github](https://github.com/lawrencekgrant/vscode-cql)
+* [project on github](https://github.com/lawrencekgrant/vscode-cql)
 
 *(Table and Column names come from CREATE scripts that have been opened.)*
 
