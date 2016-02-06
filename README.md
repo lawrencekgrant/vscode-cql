@@ -11,16 +11,18 @@ Currently Supports:
   - All CQL Keywords *(SELECT, ALTER, UUID, etc)*
   - Table Names* 
   - Column Names*
+ - Snippets
   
 Coming Soon:
  - Execute Statements
  - Context for Intellisense
  - More Structure
  - Scan for Symbols
+ - More Snippets
 
 ### For more information
 * [github](https://github.com/lawrencekgrant/vscode-cql)
 
-*(Table and Column names come from CREATE scripts.)*
+*(Table and Column names come from CREATE scripts that have been opened.)*
 
 **Enjoy!** 

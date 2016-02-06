@@ -20,7 +20,8 @@ export function activate(context: vscode.ExtensionContext) {
         var itm = new vscode.CompletionItem(val);
         itm.detail = val;
         itm.filterText = val;
-        itm.insertText = val; 
+        itm.insertText = val;
+        itm.kind = vscode.CompletionItemKind.Keyword;
         return itm;
     });
     for(var i = 0; i < items.length; i++)
@@ -45,12 +46,14 @@ export function activate(context: vscode.ExtensionContext) {
         }
         var re = /(?:create table)\s(.*)\(/i; 
         var tableName = source.match(/(?:create table)\s(.*)\(/i)[1];
+        console.log(source.match(/(?:create table)\s(.*)\(/i));
         
         if(tableName) {
             var item = new vscode.CompletionItem(tableName);
             item.detail = "Table: " + tableName;
             item.filterText = tableName;
             item.insertText = tableName;
+            item.kind = vscode.CompletionItemKind.Class;
             allCompletionItems.push(item);
         }
         
@@ -70,6 +73,7 @@ export function activate(context: vscode.ExtensionContext) {
             item.detail = "Column: " + currentValue;
             item.filterText = currentValue;
             item.insertText = currentValue;
+            item.kind = vscode.CompletionItemKind.Field;
             completionItemNames.push(currentValue);
             allCompletionItems.push(item);
         }

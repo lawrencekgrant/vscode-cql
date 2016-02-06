@@ -1,0 +1,67 @@
+{
+    "SELECT statement": {
+        "prefix": "select",
+        "body": [
+            "SELECT ${0:columns}",
+            "FROM ${1:tableName} WHERE ${2:conditions}"
+        ],
+        "description": "Retrieve data from a Cassandra table."
+    },
+    "CREATE TABLE": {
+        "prefix": "createtable",
+        "body": [
+            "CREATE TABLE ${0:tablename} (",
+            "  ${1:variable_name} ${2:int},",
+            "  ${3:variable_name_2} ${4:int}",
+            ")",
+            "WITH ${5:property}"
+        ],
+        "description": "Define a new table."
+    },
+    "CREATE KEYSPACE": {
+        "prefix": "createkeyspace",
+        "body": [
+            "CREATE KEYSPACE ${0:IF NOT EXISTS} ${1:keyspace_name}",
+            "WITH REPLICATION = { '${2:class}' : '${3:SimpleStrategy}', 'replication_factor' : ${3:3} };"
+        ],
+        "description": "Define a new keyspace and its replica placement strategy."
+    },
+    "CREATE TRIGGER": {
+        "prefix": "createtrigger",
+        "body": [
+            "CREATE TRIGGER ${0:IF NOT EXISTS} ${1:myTrigger}",
+            "  ON ${2:myTable}",
+            "  USING '${3:org.apache.cassandra.triggers.InvertedIndex}'"
+        ],
+        "description": "Registers a trigger on a table."
+    },
+    "CREATE TYPE": {
+        "prefix": "createtype",
+        "body": [
+            "CREATE TYPE ${0:IF NOT EXISTS} ${1:keyspace}.${2:type_name} (",
+            "  ${3:field_one} ${4:type},", 
+            "  ${5:field_two} ${6:type},",
+            ")"
+        ],
+        "description": "Create a user-defined type."
+    },
+    "UPDATE": {
+        "prefix": "updatetable",
+        "body": [
+            "UPDATE ${1:table_name}",
+            "SET",
+            "  ${2:column_one} = ${3:1},",
+            "  ${4:column_two} = ${5:'assignment'}",
+            "WHERE ${6:column_name} = ${7:column_value}"
+        ],
+        "description": "Update columns in a row."
+    },
+    "CREATE INDEX": {
+        "prefix": "createindex",
+        "body": [
+            "CREATE INDEX ${0:index_name} ON ${1:keyspace.table_name} (${2:column_name});"
+        ],
+        "description": "Define a new index on a single column of a table."
+    }
+    
+}
