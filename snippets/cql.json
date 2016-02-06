@@ -1,5 +1,5 @@
 {
-    "SELECT statement": {
+    "SELECT": {
         "prefix": "select",
         "body": [
             "SELECT ${0:columns}",
