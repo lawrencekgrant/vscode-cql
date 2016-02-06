@@ -22,7 +22,7 @@
         "prefix": "createkeyspace",
         "body": [
             "CREATE KEYSPACE ${0:IF NOT EXISTS} ${1:keyspace_name}",
-            "WITH REPLICATION = { '${2:class}' : '${3:SimpleStrategy}', 'replication_factor' : ${3:3} };"
+            "WITH REPLICATION = { 'class' : '${2:SimpleStrategy}', 'replication_factor' : ${3:3} };"
         ],
         "description": "Define a new keyspace and its replica placement strategy."
     },
