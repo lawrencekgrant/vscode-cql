@@ -19,6 +19,7 @@ Coming Soon:
  - More Structure
  - Scan for Symbols
  - More Snippets
+ - Better Syntax Highlighting
 
 ### For more information
 * [github](https://github.com/lawrencekgrant/vscode-cql)

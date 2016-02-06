@@ -9,13 +9,8 @@ var tablesNames = [];
 var columnNames = [];
 var completionItemNames = []
 
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "temp2" is now active!'); 
+     
     var items = keywords.map(function(val) {
         var itm = new vscode.CompletionItem(val);
         itm.detail = val;
@@ -29,13 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
         allCompletionItems.push(items[i]);
     }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
 	var disposable = vscode.commands.registerCommand('cql.about', () => {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
 		vscode.window.showInformationMessage('This is an extension to help me with my projects!!');
 	});
     
@@ -98,6 +87,5 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable2);
 }
 
-// this method is called when your extension is deactivated
 export function deactivate() {
 }
