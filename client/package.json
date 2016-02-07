@@ -1,0 +1,68 @@
+{
+	"name": "cql",
+	"displayName": "vscode-cql",
+	"description": "Cassandra CQL language for VS Code.",
+	"version": "0.2.6",
+	"publisher": "LawrenceGrant",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lawrencekgrant/vscode-cql"
+    },
+    "icon": "images/cassandra-icon.png",
+    "iconUrl": "images/cassandra-icon.png",
+	"engines": {
+		"vscode": "^0.10.1"
+	},
+	"categories": [
+		"Languages",
+        "Snippets"
+	],
+    "activationEvents": [
+        "onLanguage:cql",
+        "onCommand:cql.about"
+    ],
+    "dependencies": {
+        "vscode-languageclient": "^1.1.2",
+        "vscode" : "0.10.x"
+    },
+    "scripts": {
+		"vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+		"compile": "node ./node_modules/vscode/bin/compile -watch -p ./"
+	},
+	"devDependencies": {
+		"typescript": "^1.6.2"
+	},
+    "main": "./out/src/extension",
+	"contributes": {
+		"languages": [{
+			"id": "cql",
+			"aliases": ["CQL", "cql"],
+			"extensions": [".cql"],
+			"configuration": "./cql.configuration.json"
+		}],
+		"grammars": [{
+			"language": "cql",
+			"scopeName": "source.cql",
+			"path": "./syntaxes/cql.tmLanguage"
+		}],
+        "commands": [{
+            "command": "cql.about",
+            "title": "About CQL"
+        }],
+        "snippets": [{
+            "language": "cql",
+            "path": "./snippets/cql.json"
+        }],
+        "configuration": {
+            "type": "object",
+            "title": "Example configuration",
+            "properties": {
+                "cql.languageServer..maxNumberOfProblems": {
+                    "type": "number",
+                    "default": 100,
+                    "description": "Controls the maximum number of problems produced by the server."
+                }
+            }
+        }
+	}
+}
