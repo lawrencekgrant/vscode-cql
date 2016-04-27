@@ -5,9 +5,10 @@
         "outDir": "out",
         "noLib": true,
         "sourceMap": true,
-        "rootDir": "."
+        "rootDir": "."        
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        ".vscode-test"
     ]
 }
