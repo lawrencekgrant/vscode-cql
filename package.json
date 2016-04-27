@@ -82,7 +82,13 @@
                     "description": "Port of the Cassandra cluster to connect to."
                 }
             }
-        }
+        },
+        "keybindings": [
+            {
+                "key": "shift+f5",
+                "command": "cql.execute"
+            }
+        ]
     },
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
