@@ -13,11 +13,16 @@ Currently Supports:
   - Column Names*
  - Snippets (SELECT, CREATE TABLE|KEYSPACE|TRIGGER|TYPE|INDEX, UPDATE)
   
-Coming Soon:
- - Execute Statements
+
+  
+Task List:
+ - ~~Execute Statements~~ (done)
+ - ~~Configure extension~~ (done)
  - Context for Intellisense *(some)* 
  - ~~Better Internal Structure~~ (done)
- - Scan for Symbols
+ - Symbols functionality
+  - Document
+  - Workspace
  - Search Cassandra for symbols
  - ~~Better Syntax Highlighting~~ (done)
 

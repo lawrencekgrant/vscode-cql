@@ -2,7 +2,7 @@
     "name": "cql",
     "displayName": "cql",
     "description": "Cassandra CQL extension for VS Code.",
-    "version": "0.3.3",
+    "version": "0.4.5",
     "publisher": "LawrenceGrant",
     "engines": {
         "vscode": "^1.0.0"
@@ -27,12 +27,12 @@
     "contributes": {
         "commands": [
             {
-                "command": "extension.sayHello",
-                "title": "Hello World"
-            },
-            {
                 "command": "cql.about",
                 "title": "About CQL"
+            },
+            {
+                "command": "cql.execute",
+                "title": "Execute CQL Statement"
             }
         ],
         "languages": [
@@ -60,7 +60,22 @@
                 "language": "cql",
                 "path": "./snippets/cql.json"
             }
-        ]
+        ],
+        "configuration": {
+            "title": "CQL extension configuration",
+            "properties": {
+                "cql.address": {
+                    "type": "string",
+                    "default": "127.0.0.1",
+                    "description": "Address of Cassandra cluster to connect to."
+                },
+                "cql.port": {
+                    "type": "integer",
+                    "default": 9042,
+                    "description": "Port of the Cassandra cluster to connect to."
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
