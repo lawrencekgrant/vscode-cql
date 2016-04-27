@@ -1,7 +1,8 @@
-// 
+//
 // Note: This example test is leveraging the Mocha test framework.
 // Please refer to their documentation on https://mochajs.org/ for help.
 //
+"use strict";
 // The module 'assert' provides assertion methods from node
 var assert = require('assert');
 // Defines a Mocha test suite to group tests of similar kind together
