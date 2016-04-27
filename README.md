@@ -40,4 +40,7 @@ This is an extension for working with Cassandra CQL. This extension supports syn
 
 *(Table and Column names come from CREATE scripts that have been opened.)*
 
+### Build Status:
+[![Build Status](https://travis-ci.org/lawrencekgrant/vscode-cql.svg?branch=master)](https://travis-ci.org/lawrencekgrant/vscode-cql)
+
 **Enjoy!** 
