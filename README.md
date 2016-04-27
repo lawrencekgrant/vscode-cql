@@ -14,13 +14,13 @@ This is an extension for working with Cassandra CQL. This extension supports syn
     - Table Names* 
     - Column Names*
     - Snippets (SELECT, CREATE TABLE|KEYSPACE|TRIGGER|TYPE|INDEX, UPDATE)
-    - [CQL Statement Execution](#CQL Statement)
+    - CQL Statement Execution
     - Keybinding for CQL Statement Execution
  
-###CQL Statement
+###CQL Statement Execution
 **Execute SQL Statement:**
 
-Pressing Shift+F5 to execute a CQL statement or press [F1] and then type 'exec' to find the "Execute CQL Statement" command. In either case, if text has been highlighted that text will be sent to the configured Cassandra endpoint; if there is no text selected then the entire document will be sent to Cassandra to run. Below you will find [instructions to configure the extension](#Configuration) to connect to your Cassandra endpoint.  
+Pressing [Shift+F5] to execute a CQL statement or pressing [F1] and then typing 'exec' to find the "Execute CQL Statement" command. In either case, if text has been highlighted that text will be sent to the configured Cassandra endpoint; if there is no text selected then the entire document will be sent to Cassandra to run. Below you will find instructions to configure the extension to connect to your Cassandra endpoint.  
 
 ###Configuration: 
 If your Cassandra endpoint is at 127.0.0.1:9042 (or localhost), then there is nothing to configure. If you have a remote endpoint then you will want to set the following keys in your [user configuration](https://code.visualstudio.com/Docs/customization/userandworkspace).
@@ -39,7 +39,7 @@ If your Cassandra endpoint is at 127.0.0.1:9042 (or localhost), then there is no
     - Workspace
     - Search Cassandra for symbols
     - ~~Better Syntax Highlighting~~ (done)
-    - Moving task to Issues
+    - Move this task list Issues
 
 
 ### For more information
@@ -50,4 +50,4 @@ If your Cassandra endpoint is at 127.0.0.1:9042 (or localhost), then there is no
 ### Build Status:
 [![Build Status](https://travis-ci.org/lawrencekgrant/vscode-cql.svg?branch=master)](https://travis-ci.org/lawrencekgrant/vscode-cql)
 
-**Enjoy!** 
+#**Enjoy!** 
