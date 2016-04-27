@@ -2,7 +2,7 @@
     "name": "cql",
     "displayName": "cql",
     "description": "Cassandra CQL extension for VS Code.",
-    "version": "0.3.1",
+    "version": "0.3.3",
     "publisher": "LawrenceGrant",
     "engines": {
         "vscode": "^1.0.0"
@@ -33,10 +33,6 @@
             {
                 "command": "cql.about",
                 "title": "About CQL"
-            },
-            {
-                "command": "cql.execute",
-                "title": "Execute CQL Statement"
             }
         ],
         "languages": [
