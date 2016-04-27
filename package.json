@@ -4,12 +4,19 @@
     "description": "Cassandra CQL extension for VS Code.",
     "version": "0.4.5",
     "publisher": "LawrenceGrant",
+    "author": {
+        "name": "Lawrence Grant"
+    },
     "engines": {
         "vscode": "^1.0.0"
     },
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/lawrencekgrant/vscode-cql/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/lawrencekgrant/vscode-cql"
     },
     "icon": "images/cassandra-icon.png",
     "iconUrl": "images/cassandra-icon.png",    
@@ -80,7 +87,8 @@
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
         "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
         "typescript": "^1.8.5",
