@@ -18,8 +18,12 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(cqlDocumentParser.registerOnDidOpenTextDocument());
     context.subscriptions.push(cqlCompletionItems.registerCompletionItemProvider());
     context.subscriptions.push(cqlExecutor.registerExecuteCommand());
-    //context.subscriptions.push(cqlSymbolProvider.registerDocumentSymbolProvider());
+    context.subscriptions.push(cqlSymbolProvider.registerDocumentSymbolProvider());
+    //context.subscriptions.push(cqlSymbolProvider.registerWorkspaceSymbolProvider());
     console.log('Completed registration of CQL extension functionality.');
+    
+    
+    
 }
 
 export function deactivate() {

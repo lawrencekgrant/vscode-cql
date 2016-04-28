@@ -1,5 +1,6 @@
 import vscode = require('vscode');
 import cqlCompletionItems = require('./cqlCompletionItems');
+import cqlSymbolProvider = require('./cqlSymbolProvider');
 
 export function registerOnDidOpenTextDocument(): vscode.Disposable {
     return vscode.workspace.onDidOpenTextDocument(function(evt) {
@@ -30,6 +31,8 @@ export function registerOnDidOpenTextDocument(): vscode.Disposable {
             var val2 = columns[i].match(/([^\s]+)/i)[0].trim();
             columns[i] = val2;
         }
+        
+        let currentText = evt.getText();
 
         for (var i = 0; i < columns.length; i++) {
             var currentValue = columns[i];
@@ -43,6 +46,19 @@ export function registerOnDidOpenTextDocument(): vscode.Disposable {
                 
                 cqlCompletionItems.completionFields.push(currentValue);
                 cqlCompletionItems.completionItemList.push(item);
+                
+                for(let i = 0; i < evt.lineCount; i++) {
+                    var currentLine = evt.lineAt(i).text;
+                    let symbolFoundIndex = currentLine.indexOf(currentValue);
+                    if(symbolFoundIndex > -1) {
+                        let symbolRange = new vscode.Range(i, symbolFoundIndex, i, symbolFoundIndex + currentValue.length);
+                        
+                        let symbolItem = new vscode.SymbolInformation(currentValue, vscode.SymbolKind.Field, symbolRange, vscode.Uri.file(evt.fileName), tableName);
+                        cqlSymbolProvider.DocumentSymbols.push(symbolItem);
+                        cqlSymbolProvider.WorkspaceSymbols.push(symbolItem);
+                        break;                        
+                    }
+                }
             }
         }
     });

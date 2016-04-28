@@ -40,7 +40,7 @@
 				</dict>
 			</dict>
 			<key>match</key>
-			<string>(?i:^\s*(create)\s+(index|keyspace|user|table|with|replication|(unique\s+)?index|language|operator class|operator|rule|schema|sequence|table|tablespace|trigger|type|user|view|with|replication|)\s+)(['"`]?)(\w+)\4</string>
+			<string>(?i:^\s*(create)\s+(index|keyspace|user|table|with|replication|(unique\s+)?index|language|operator class|operator|rule|schema|sequence|table|tablespace|trigger|type|user|view|with|replication|if|not|exists)\s+)(['"`]?)(\w+)\4</string>
 			<key>name</key>
 			<string>meta.create.cql</string>
 		</dict>
@@ -227,7 +227,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(?i:\b(select(\s+distinct)?|insert\s+(ignore\s+)?into|update|delete|truncate|from|set|where|group\sby|or|like|and|into\s(outfile|dumpfile)?|load\slocal|infile|fields|lines|union(\s+all)?|having|(order|terminated|enclosed)\sby|limit|(inner|cross)\s+join|straight_join|(left|right)(\s+outer)?\s+join|natural(\s+(left|right)(\s+outer)?)?\s+join)\b)</string>
+			<string>(?i:\b(select(\s+distinct)?|insert\s+(ignore\s+)?into|update|delete|truncate|from|set|where|group\sby|or|like|and|into\s(outfile|dumpfile)?|load\slocal|infile|fields|lines|union(\s+all)?|having|(order|terminated|enclosed)\sby|limit|(inner|cross)\s+join|straight_join|(left|right)(\s+outer)?\s+join|natural(\s+(left|right)(\s+outer)?)?\s+join)\b)|if|not|exists</string>
 			<key>name</key>
 			<string>keyword.other.DML.cql</string>
 		</dict>
