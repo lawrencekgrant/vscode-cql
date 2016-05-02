@@ -8,6 +8,8 @@ import cqlCompletionItems = require('./cqlCompletionItems');
 import cqlExecutor = require('./cqlExecutor');
 import cqlSymbolProvider = require('./cqlSymbolProvider');
 
+import cqlCassandraScan = require('./cqlCassandraScan');
+
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('CQL extension for vscode is now running. Registering functionality.');    
@@ -22,7 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
     //context.subscriptions.push(cqlSymbolProvider.registerWorkspaceSymbolProvider());
     console.log('Completed registration of CQL extension functionality.');
     
-    
+    cqlCassandraScan.scanCassandra();
     
 }
 
