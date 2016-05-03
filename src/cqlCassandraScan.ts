@@ -32,12 +32,13 @@ function scanCassandra() {
                         addCompletionKeyspace(keyspace.keyspace_name);
                     }
                 });
+                addCompletionKeyspaceColumnFamilies();
            }
         });
     });
 }
 
-function addCompletionKeyspaceColumnFamilies(keyspaceName: string) {
+function addCompletionKeyspaceColumnFamilies() {
     let cassandraAddress = vscode.workspace.getConfiguration('cql')['address'];
     let cassandraPort = vscode.workspace.getConfiguration('cql')['port']; //TODO: Use this.
     
@@ -53,7 +54,9 @@ function addCompletionKeyspaceColumnFamilies(keyspaceName: string) {
             console.error(`Error: ${connectError}`);
             vscode.window.showErrorMessage(`Could not connect to find column families: ${connectError}`);
         } else {
-            client.execute(`select * from system.schema_columnfamilies where keyspace_name = '${keyspaceName}';`, (executeError,result)=>{
+            let cqlStatement = `select * from system.schema_columnfamilies where keyspace_name in ('${cqlCompletionItems.completionKeyspaces.join("','")}');`;
+            console.log(`Executing statement ${cqlStatement}.`);
+            client.execute(cqlStatement, (executeError,result)=>{
                 if(executeError) {
                     console.error(`Error: ${executeError}`);
                     vscode.window.showErrorMessage(`Could not connect to find column families: ${executeError}`);
@@ -62,15 +65,65 @@ function addCompletionKeyspaceColumnFamilies(keyspaceName: string) {
                         console.log(`Attempting to add column family ${columnFamily.columnfamily_name}.`);
                         addColumnFamily(columnFamily);
                     });
+                    addCompletionKeyspaceColumnFamiliesColumns()
                 }
             });
         }
     });
 }
 
+function addCompletionKeyspaceColumnFamiliesColumns() {
+    let cassandraAddress = vscode.workspace.getConfiguration('cql')['address'];
+    let cassandraPort = vscode.workspace.getConfiguration('cql')['port']; //TODO: Use this.
+    
+    let clientOptions = {
+        contactPoints: [cassandraAddress],
+        hosts: [cassandraAddress]
+    };
+    
+    let client = new cassandra.Client(clientOptions); //genericize this
+   
+    client.connect((connectError,result)=> {
+        if(connectError) {
+            console.error(`Error: ${connectError}`);
+            vscode.window.showErrorMessage(`Could not connect to find columns: ${connectError}`);
+        } else {
+            let cqlStatement = `select * from system.schema_columns where columnfamily_name in ('${cqlCompletionItems.completionColumnFamilies.join("','")}') ALLOW FILTERING;`;
+            console.log(`Executing statement ${cqlStatement}.`);
+            client.execute(cqlStatement, (executeError,result)=>{
+                if(executeError) {
+                    console.error(`Error: ${executeError}`);
+                    vscode.window.showErrorMessage(`Could not connect to find column families: ${executeError}`);
+                } else {
+                    result.rows.forEach(column=> {
+                        console.log(`Attempting to add column: ${column.column_name}`);
+                        addColumn(column);
+                    });
+                }
+            });
+        }
+    });
+}
+function addColumn(column: any) {
+    if(cqlCompletionItems.completionColumns.indexOf(column.column_name) > -1) {
+        console.error(`Already found keyspace ${column.column_name}, will not add again.`);
+        return; 
+    }
+    
+    cqlCompletionItems.completionColumns.push(column.column_name);
+    
+    let item = new vscode.CompletionItem(column.column_name);
+    item.detail = `Column: ${column.column_name} for column family ${column.columnfamily_name} in keyspace ${column.keyspace_name}`;
+    item.filterText = column.column_name;
+    item.insertText = column.column_name;
+    item.kind = vscode.CompletionItemKind.Property;
+    
+    cqlCompletionItems.completionItemList.push(item);
+}
+
 function addColumnFamily(columnFamily: any) {
     if(cqlCompletionItems.completionColumnFamilies.indexOf(columnFamily) > -1) {
-        console.error(`Already found keyspace ${columnFamily}, will not add again.`);
+        console.error(`Already found keyspace ${columnFamily.columnfamily_name}, will not add again.`);
         return; 
     }
     
@@ -102,6 +155,4 @@ function addCompletionKeyspace(keyspaceName : string) {
     
     console.log("Adding completion item for keyspace...", item);
     cqlCompletionItems.completionItemList.push(item);
-    
-    addCompletionKeyspaceColumnFamilies(keyspaceName);
 }

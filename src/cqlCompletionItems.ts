@@ -5,6 +5,7 @@ export var completionFields : string[] = [];
 export var completionTables : string[] = [];
 export var completionKeyspaces : string[] = [];
 export var completionColumnFamilies: string [] = [];
+export var completionColumns: string[] = [];
 
 export function registerCompletionItemProvider() : vscode.Disposable {
     return vscode.languages.registerCompletionItemProvider('cql', new cqlCompletionItemProvider());
