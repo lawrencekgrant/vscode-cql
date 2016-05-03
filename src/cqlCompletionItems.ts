@@ -3,6 +3,7 @@ import vscode = require('vscode');
 export var completionItemList : vscode.CompletionItem[] = [];
 export var completionFields : string[] = [];
 export var completionTables : string[] = [];
+export var completionKeyspaces : string[] = [];
 
 export function registerCompletionItemProvider() : vscode.Disposable {
     return vscode.languages.registerCompletionItemProvider('cql', new cqlCompletionItemProvider());

@@ -28,7 +28,8 @@
     "activationEvents": [
         "onLanguage:cql",
         "onCommand:cql.about",
-        "onCommand:cql.execute"
+        "onCommand:cql.execute",
+        "onCommand:cql.scan"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -40,6 +41,10 @@
             {
                 "command": "cql.execute",
                 "title": "Execute CQL Statement"
+            },
+            {
+                "command": "cql.scan",
+                "title": "Scan connected Cassandra for symbols"
             }
         ],
         "languages": [
