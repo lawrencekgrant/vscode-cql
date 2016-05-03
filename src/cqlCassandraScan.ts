@@ -12,7 +12,7 @@ export function scanCassandra() {
     let client = new cassandra.Client(clientOptions);
    
     client.connect((err,result)=> {
-        client.execute(""select * from system.schema_keyspaces;"", (err,result)=>{
+        client.execute('select * from system.schema_keyspaces;', (err,result)=>{
             console.log(result);
         });
         console.log(result);
