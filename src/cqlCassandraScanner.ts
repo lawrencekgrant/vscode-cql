@@ -4,6 +4,22 @@ import cqlCompletionItems = require("./cqlCompletionItems");
 
 import { Keyspace, ColumnFamily, Column } from "./types/CqlTypes";
 
+export function registerScanCommand(): vscode.Disposable {
+    return vscode.commands.registerCommand("cql.scan", () => {
+        let scanner = new CqlCassandraScanner();
+        scanner.Scan()
+            .then(() => console.log("Cassandra scan complete."));
+        console.log("Cassandra scan started.");
+    });
+}
+
+export function executeScan(): Thenable<any> {
+    return new Promise((resolve) => {
+        vscode.commands.executeCommand("cql.scan")
+            .then(() => {resolve(); });
+    });
+}
+
 export class CqlCassandraScanner {
     private client;
     private isConnected: boolean;
