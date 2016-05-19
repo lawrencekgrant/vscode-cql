@@ -29,7 +29,8 @@
         "onLanguage:cql",
         "onCommand:cql.about",
         "onCommand:cql.execute",
-        "onCommand:cql.scan"
+        "onCommand:cql.scan",
+        "onCommand:cql.connect"
     ],
     "main": "./out/src/extension",
     "contributes": {
@@ -45,6 +46,10 @@
             {
                 "command": "cql.scan",
                 "title": "Scan connected Cassandra for symbols"
+            },
+            {
+                "command": "cql.connect",
+                "title": "Connect to a Cassandra node."
             }
         ],
         "languages": [
@@ -85,7 +90,13 @@
                     "type": "integer",
                     "default": 9042,
                     "description": "Port of the Cassandra cluster to connect to."
+                },
+                "cql.scanOnStartup": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Scan the default Cassandra server for completion items upon startup."
                 }
+                
             }
         },
         "keybindings": [

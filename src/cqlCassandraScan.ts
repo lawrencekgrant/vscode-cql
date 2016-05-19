@@ -1,11 +1,23 @@
 import vscode = require("vscode");
 import cassandra = require("cassandra-driver");
+import { CqlCassandraScanner } from "./cqlCassandraScanner";
 
 import cqlCompletionItems = require("./cqlCompletionItems");
 
 export function registerScanCommand(): vscode.Disposable {
     return vscode.commands.registerCommand("cql.scan", () => {
-        scanCassandra();
+        // scanCassandra();
+        let scanner = new CqlCassandraScanner();
+        scanner.Scan()
+            .then(() => console.log('Scan complete.'));
+        console.log("Cassandra scan started.");
+    });
+}
+
+export function executeScan(): Thenable<any> {
+    return new Promise((resolve) => {
+        vscode.commands.executeCommand("cql.scan")
+            .then(() => {resolve(); });
     });
 }
 
