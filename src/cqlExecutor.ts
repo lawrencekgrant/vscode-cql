@@ -11,7 +11,6 @@ export function registerExecuteCommand() : vscode.Disposable {
         
         console.log("address", cassandraAddress, "port", cassandraPort);
         
-        vscode.window.showInformationMessage(`Executing statement against Cassandra @  + ${cassandraAddress}:${cassandraPort}`);
         console.log('cassandra location', cassandraAddress);
         
         let client = new cassandra.Client({
@@ -28,6 +27,7 @@ export function registerExecuteCommand() : vscode.Disposable {
             statement = vscode.window.activeTextEditor.document.getText(new vscode.Range(selection.start, selection.end));
         }
         console.log("statement: " + statement);
+        vscode.window.showInformationMessage(`Executing statement:"${statement}" against Cassandra @  + ${cassandraAddress}:${cassandraPort}`);
 
         client.connect(function (err, result) {
             client.execute(statement.toString(), [], { prepare: true }, function (err, result) {
