@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
     cqlKeywords.registerKeywords();
 
     context.subscriptions.push(cqlAbout.registerAboutMessage());
-    // context.subscriptions.push(cqlDocumentParser.registerOnDidOpenTextDocument());
+    context.subscriptions.push(cqlDocumentParser.registerOnDidOpenTextDocument());
     context.subscriptions.push(cqlCompletionItems.registerCompletionItemProvider());
     context.subscriptions.push(cqlExecutor.registerExecuteCommand());
     context.subscriptions.push(cqlSymbolProvider.registerDocumentSymbolProvider());

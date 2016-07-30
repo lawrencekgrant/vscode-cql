@@ -39,10 +39,15 @@ export class CqlCassandraScanner {
         let cassandraAddress = vscode.workspace.getConfiguration("cql")["address"];
         let cassandraPort = vscode.workspace.getConfiguration("cql")["port"];
 
-        let clientOptions = {
-            contactPoints: [cassandraAddress],
-            hosts: [cassandraAddress]
-        };
+        let cassandraConnectionOptions = vscode.workspace.getConfiguration("cql")["config"];
+
+
+        let clientOptions = !!cassandraConnectionOptions 
+            ? cassandraConnectionOptions 
+            : {
+                contactPoints: [cassandraAddress],
+                hosts: [cassandraAddress]
+            };
 
         console.log("client options:", clientOptions);
 
@@ -131,7 +136,19 @@ export class CqlCassandraScanner {
                 .then((result) => {
                     resolve(result.rows.filter(row => row.keyspace_name.indexOf("system") !== 0).map(row => new Keyspace(row.keyspace_name)));
                 })
-                .catch(error => reject(error));
+                .catch(error => {
+                    if(error.message && error.message.indexOf("unconfigured table") > -1)
+                    {
+                        statement = `select keyspace_name from system_schema.keyspaces`;
+                        this.executeStatement(statement)
+                        .then((result) => {
+                            resolve(result.rows.filter(row => row.keyspace_name.indexOf("system") !== 0).map(row => new Keyspace(row.keyspace_name)));
+                        })
+                        .catch(err=>reject(err));
+                    } else {
+                        reject(error);
+                    }
+                });
         });
     }
 
@@ -145,7 +162,19 @@ export class CqlCassandraScanner {
                         .then(result => {
                             resolve(result.rows.map(row => new ColumnFamily(keyspace, row.columnfamily_name)));
                         })
-                        .catch(err => reject(err));
+                        .catch(error => {
+                            if(error.message && error.message.indexOf('unconfigured') > -1) {
+                                let statement = `select table_name from system_schema.tables where keyspace_name = '${keyspace.Name}'`;
+
+                                this.executeStatement(statement)
+                                    .then(result => {
+                                        resolve(result.rows.map(row => new ColumnFamily(keyspace, row.table_name)));
+                                    })
+                                    .catch(err=>reject(err));
+                            } else {
+                                reject(error);
+                            }
+                        });
                 });
             });
 
@@ -168,7 +197,19 @@ export class CqlCassandraScanner {
                         .then(result => {
                             resolve(result.rows.map(row => new Column(columnFamily, row.column_name)));
                         })
-                        .catch(error => reject(error));
+                        .catch(error => {
+                            if(error.message && error.message.indexOf('unconfigured') > -1) {
+                                let statement = `select column_name from system_schema.columns where keyspace_name = '${columnFamily.Keyspace.Name}' and table_name = '${columnFamily.Name}'`;
+
+                                this.executeStatement(statement)
+                                    .then(result => {
+                                        resolve(result.rows.map(row => new Column(columnFamily, row.column_name)));
+                                    })
+                                    .catch(err => reject(err));
+                            } else {
+                                reject(error)
+                            }
+                        });
                 });
             });
 

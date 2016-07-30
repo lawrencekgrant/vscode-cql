@@ -1,122 +1,133 @@
 {
-    "name": "cql",
-    "displayName": "cql",
-    "description": "Cassandra CQL extension for VS Code.",
-    "version": "0.4.8",
-    "publisher": "LawrenceGrant",
-    "author": {
-        "name": "Lawrence Grant"
-    },
-    "engines": {
-        "vscode": "^1.0.0"
-    },
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/lawrencekgrant/vscode-cql/issues"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/lawrencekgrant/vscode-cql"
-    },
-    "icon": "images/cassandra-icon.png",
-    "iconUrl": "images/cassandra-icon.png",    
-    "categories": [
-        "Languages",
-        "Snippets",
-        "Other"
+  "name": "cql",
+  "displayName": "cql",
+  "description": "Cassandra CQL extension for VS Code.",
+  "version": "0.5.0",
+  "publisher": "LawrenceGrant",
+  "author": {
+    "name": "Lawrence Grant"
+  },
+  "engines": {
+    "vscode": "^1.0.0"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lawrencekgrant/vscode-cql/issues"
+  },
+  "keywords": [
+    "cql",
+    "cassandra",
+    "query",
+    "language"
+  ],
+  "readme": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lawrencekgrant/vscode-cql"
+  },
+  "icon": "images/cassandra-icon.png",
+  "iconUrl": "images/cassandra-icon.png",
+  "categories": [
+    "Languages",
+    "Snippets",
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:cql",
+    "onCommand:cql.about",
+    "onCommand:cql.execute",
+    "onCommand:cql.scan",
+    "onCommand:cql.connect"
+  ],
+  "main": "./out/src/extension",
+  "contributes": {
+    "commands": [
+      {
+        "command": "cql.about",
+        "title": "About CQL"
+      },
+      {
+        "command": "cql.execute",
+        "title": "Execute CQL Statement"
+      },
+      {
+        "command": "cql.scan",
+        "title": "Scan connected Cassandra for symbols"
+      },
+      {
+        "command": "cql.connect",
+        "title": "Connect to a Cassandra node."
+      }
     ],
-    "activationEvents": [
-        "onLanguage:cql",
-        "onCommand:cql.about",
-        "onCommand:cql.execute",
-        "onCommand:cql.scan",
-        "onCommand:cql.connect"
+    "languages": [
+      {
+        "id": "cql",
+        "aliases": [
+          "CQL",
+          "cql"
+        ],
+        "extensions": [
+          ".cql"
+        ],
+        "configuration": "./lang/cql.configuration.json"
+      }
     ],
-    "main": "./out/src/extension",
-    "contributes": {
-        "commands": [
-            {
-                "command": "cql.about",
-                "title": "About CQL"
-            },
-            {
-                "command": "cql.execute",
-                "title": "Execute CQL Statement"
-            },
-            {
-                "command": "cql.scan",
-                "title": "Scan connected Cassandra for symbols"
-            },
-            {
-                "command": "cql.connect",
-                "title": "Connect to a Cassandra node."
-            }
-        ],
-        "languages": [
-            {
-                "id": "cql",
-                "aliases": [
-                    "CQL",
-                    "cql"
-                ],
-                "extensions": [
-                    ".cql"
-                ],
-                "configuration": "./lang/cql.configuration.json"
-            }
-        ],
-        "grammars": [
-            {
-                "language": "cql",
-                "scopeName": "source.cql",
-                "path": "./syntaxes/cql.tmLanguage"
-            }
-        ],
-        "snippets": [
-            {
-                "language": "cql",
-                "path": "./snippets/cql.json"
-            }
-        ],
-        "configuration": {
-            "title": "CQL extension configuration",
-            "properties": {
-                "cql.address": {
-                    "type": "string",
-                    "default": "127.0.0.1",
-                    "description": "Address of Cassandra cluster to connect to."
-                },
-                "cql.port": {
-                    "type": "integer",
-                    "default": 9042,
-                    "description": "Port of the Cassandra cluster to connect to."
-                },
-                "cql.scanOnStartup": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Scan the default Cassandra server for completion items upon startup."
-                }
-                
-            }
+    "grammars": [
+      {
+        "language": "cql",
+        "scopeName": "source.cql",
+        "path": "./syntaxes/cql.tmLanguage"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "cql",
+        "path": "./snippets/cql.json"
+      }
+    ],
+    "configuration": {
+      "title": "CQL extension configuration",
+      "properties": {
+        "cql.address": {
+          "type": "string",
+          "default": "127.0.0.1",
+          "description": "Address of Cassandra cluster to connect to."
         },
-        "keybindings": [
-            {
-                "key": "shift+f5",
-                "command": "cql.execute"
-            }
-        ]
+        "cql.port": {
+          "type": "integer",
+          "default": 9042,
+          "description": "Port of the Cassandra cluster to connect to."
+        },
+        "cql.scanOnStartup": {
+          "type": "boolean",
+          "default": false,
+          "description": "Scan the default Cassandra server for completion items upon startup."
+        },
+        "cql.connection": {
+          "type": "object",
+          "default": null,
+          "description": "Connection object for connecting to cassandra"
+        }
+      }
     },
-    "scripts": {
-        "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-        "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "node ./node_modules/vscode/bin/test"
-    },
-    "devDependencies": {
-        "typescript": "^1.8.5",
-        "vscode": "^0.11.0"
-    },
-    "dependencies": {
-        "cassandra-driver": "^3.0.2"
-    }
+    "keybindings": [
+      {
+        "key": "shift+f5",
+        "command": "cql.execute"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
+    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "typescript": "^1.8.5",
+    "vscode": "^0.11.0"
+  },
+  "dependencies": {
+    "cassandra-driver": "^3.0.2"
+  }
 }

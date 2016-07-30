@@ -8,15 +8,14 @@ export function registerExecuteCommand() : vscode.Disposable {
         
         let cassandraAddress = vscode.workspace.getConfiguration("cql")["address"];
         let cassandraPort = vscode.workspace.getConfiguration("cql")["port"];
+
+        let cassandraConfig = vscode.workspace.getConfiguration("cql")["config"];
         
         console.log("address", cassandraAddress, "port", cassandraPort);
         
         console.log('cassandra location', cassandraAddress);
         
-        let client = new cassandra.Client({
-            contactPoints: [cassandraAddress],
-            hosts: [cassandraAddress]
-        });
+        let client = new cassandra.Client(cassandraConfig);
         
         var statement = "";
         if (vscode.window.activeTextEditor.selection.isEmpty) {

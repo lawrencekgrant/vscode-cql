@@ -2,9 +2,16 @@ import vscode = require('vscode');
 import cqlCompletionItems = require('./cqlCompletionItems');
 import cqlSymbolProvider = require('./cqlSymbolProvider');
 
+
+
 export function registerOnDidOpenTextDocument(): vscode.Disposable {
     return vscode.workspace.onDidOpenTextDocument(function(evt) {
         console.log(evt);
+        let sqlText = evt.getText();
+    
+    
+    
+
         var source = evt.getText().replace(/(\r\n|\n|\r)/gm,"");
         
         console.log('source', source);
