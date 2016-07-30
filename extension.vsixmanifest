@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Language="en-US" Id="cql" Version="0.5.0" Publisher="LawrenceGrant"/>
+    <DisplayName>cql</DisplayName>
+    <Description xml:space="preserve">Cassandra CQL extension for VS Code.</Description>
+    <Tags>cql,cassandra,query,language,snippet,keybindings,CQL,__ext_.cql</Tags>
+    <Categories>Languages,Snippets,Other</Categories>
+    <GalleryFlags>Public</GalleryFlags>
+    <Badges></Badges>
+    <Properties>
+      
+        <Property Id="Microsoft.VisualStudio.Services.Links.Source" Value="https://github.com/lawrencekgrant/vscode-cql" />
+        <Property Id="Microsoft.VisualStudio.Services.Links.Getstarted" Value="https://github.com/lawrencekgrant/vscode-cql" />
+        
+        <Property Id="Microsoft.VisualStudio.Services.Links.GitHub" Value="https://github.com/lawrencekgrant/vscode-cql" />
+        
+      
+      <Property Id="Microsoft.VisualStudio.Services.Links.Support" Value="https://github.com/lawrencekgrant/vscode-cql/issues" />
+      
+      
+      
+    </Properties>
+    
+    <Icon>extension/images/cassandra-icon.png</Icon>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Code"/>
+  </Installation>
+  <Dependencies/>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.Code.Manifest" Path="extension/package.json" Addressable="true" />
+    <Asset Type="Microsoft.VisualStudio.Services.Content.Details" Path="extension/README.md" Addressable="true" /><Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/images/cassandra-icon.png" Addressable="true" />
+  </Assets>
+</PackageManifest>

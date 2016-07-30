@@ -180,7 +180,10 @@ export class CqlCassandraScanner {
             let returnColumnFamilies = new Array<ColumnFamily>();
             Promise.all(keyspacePromises)
                 .then(columnFamiliesSet => {
-                    columnFamiliesSet.forEach(columnFamilySet => columnFamilySet.forEach(columnFamily => returnColumnFamilies.push(columnFamily)));
+                    columnFamiliesSet.forEach(columnFamilySet => 
+                        (columnFamilySet as any).forEach(columnFamily => 
+                            returnColumnFamilies.push(columnFamily)));
+                            
                     resolve(returnColumnFamilies);
                 });
         });
@@ -215,7 +218,9 @@ export class CqlCassandraScanner {
             Promise.all(columnFamilyPromises)
                 .then(resultColumnSets => {
                     let returnColumns = new Array<Column>();
-                    resultColumnSets.forEach(columnSet => columnSet.forEach(column => returnColumns.push(column)));
+                    resultColumnSets.forEach(columnSet => 
+                        (columnSet as any).forEach(column => 
+                            returnColumns.push(column)));
                     resolve(returnColumns);
                 });
         });

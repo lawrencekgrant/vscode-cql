@@ -5,7 +5,9 @@
         "outDir": "out",
         "noLib": true,
         "sourceMap": true,
-        "rootDir": "."        
+        "rootDir": ".",
+        "diagnostics": true,
+        "listFiles": true
     },
     "exclude": [
         "node_modules",
