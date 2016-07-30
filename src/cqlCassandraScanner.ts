@@ -2,7 +2,7 @@ import vscode = require("vscode");
 import cassandra = require("cassandra-driver");
 import cqlCompletionItems = require("./cqlCompletionItems");
 
-import { Keyspace, ColumnFamily, Column } from "./types/cqlTypes";
+import { Keyspace, ColumnFamily, Column } from "./types/cqlTypes.ts";
 
 export function registerScanCommand(): vscode.Disposable {
     return vscode.commands.registerCommand("cql.scan", () => {
