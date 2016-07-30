@@ -25,8 +25,14 @@ Pressing [Shift+F5] to execute a CQL statement or pressing [F1] and then typing 
 ###Configuration: 
 If your Cassandra endpoint is at 127.0.0.1:9042 (or localhost), then there is nothing to configure. If you have a remote endpoint then you will want to set the following keys in your [user configuration](https://code.visualstudio.com/Docs/customization/userandworkspace).
 - Configuration Keys
- - **cql.address** *(string)*: IPAddress or hostname of Cassandra endpoint for the Execute command. *Default is 127.0.0.1*
- - **cql.port**: *(integer)*: Port of the Cassandra endpoint for the Execute command. *Default is 9024*
+ - **cql.address** *(string)*: IPAddress or hostname of Cassandra endpoint for the Execute command. *Default is 127.0.0.1.*
+ - **cql.port**: *(integer)*: Port of the Cassandra endpoint for the Execute command. *Default is 9024.*
+ - **cql.scanOnStartup##: #(boolean)*: Scan the cluster in the *cql.connection* value for non-system objects at startup. *Default is false.*
+ - **cql.connection** *(object)*: Connection configuraiton object. This overrides cql.address and cql.port and is the new default configuration. ***Example*** 
+ `{
+     "contactPoints": ["127.0.0.1"],
+     "hosts": ["127.0.0.1"]
+ }`
 
 ### Other
    - Task List:

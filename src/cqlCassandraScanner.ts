@@ -39,8 +39,7 @@ export class CqlCassandraScanner {
         let cassandraAddress = vscode.workspace.getConfiguration("cql")["address"];
         let cassandraPort = vscode.workspace.getConfiguration("cql")["port"];
 
-        let cassandraConnectionOptions = vscode.workspace.getConfiguration("cql")["config"];
-
+        let cassandraConnectionOptions = vscode.workspace.getConfiguration("cql")["connection"];
 
         let clientOptions = !!cassandraConnectionOptions 
             ? cassandraConnectionOptions 

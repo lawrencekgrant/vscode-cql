@@ -105,7 +105,10 @@
         },
         "cql.connection": {
           "type": "object",
-          "default": null,
+          "default": {
+            "contactPoints": ["127.0.0.1"],
+            "hosts": ["127.0.0.1"]
+          },
           "description": "Connection object for connecting to cassandra"
         }
       }
