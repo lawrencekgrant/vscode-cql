@@ -43,7 +43,7 @@ If your Cassandra endpoint is at 127.0.0.1:9042 (or localhost), then there is no
     - Symbols functionality
     - Document
     - Workspace
-    - Search Cassandra for symbols
+    - ~~Search Cassandra for symbols
     - ~~Better Syntax Highlighting~~ (done)
     - Move this task list Issues
 
