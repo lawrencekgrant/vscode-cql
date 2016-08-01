@@ -2,7 +2,7 @@
   "name": "cql",
   "displayName": "cql",
   "description": "Cassandra CQL extension for VS Code.",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "publisher": "LawrenceGrant",
   "author": {
     "name": "Lawrence Grant"
