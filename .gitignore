@@ -3,3 +3,4 @@
 **/*.vsix
 **/.vscode-test
 **/npm-debug.log.*
+**/*.vsix
