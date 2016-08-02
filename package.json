@@ -37,7 +37,7 @@
     "onCommand:cql.about",
     "onCommand:cql.execute",
     "onCommand:cql.scan",
-    "onCommand:cql.connect"
+    "onCommand:cql.schema"
   ],
   "main": "./out/src/extension",
   "contributes": {
@@ -55,8 +55,8 @@
         "title": "Scan connected Cassandra for symbols"
       },
       {
-        "command": "cql.connect",
-        "title": "Connect to a Cassandra node."
+        "command": "cql.schema",
+        "title": "Show schema for connected Cassandra cluster."
       }
     ],
     "languages": [
@@ -103,7 +103,7 @@
           "default": false,
           "description": "Scan the default Cassandra server for completion items upon startup."
         },
-        "cql.connection": {
+        "cql.schema": {
           "type": "object",
           "default": {
             "contactPoints": ["127.0.0.1"],

@@ -9,7 +9,7 @@ import cqlExecutor = require("./cqlExecutor");
 import cqlSymbolProvider = require("./cqlSymbolProvider");
 
 import cqlCassandraScanner = require("./cqlCassandraScanner");
-import cqlConnect = require("./cqlConnect");
+import cqlSchema = require("./cqlSchema");
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
     // context.subscriptions.push(cqlSymbolProvider.registerWorkspaceSymbolProvider());
 
     context.subscriptions.push(cqlCassandraScanner.registerScanCommand());
-    context.subscriptions.push(cqlConnect.registerConnectCommand());
+    context.subscriptions.push(...cqlSchema.registerSchemaCommand());
     console.log('Completed registration of CQL extension functionality.');
 
     console.log("Scan on startup? ", vscode.workspace.getConfiguration("cql")["scanOnStartup"]);
