@@ -4,3 +4,4 @@
 **/.vscode-test
 **/npm-debug.log.*
 **/*.vsix
+/packages
