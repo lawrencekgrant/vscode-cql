@@ -1,7 +1,7 @@
 import vscode = require("vscode");
 import cqlSchemaDocumentProvider = require('./cqlSchemaDocumentProvider');
 import * as uuid from 'node-uuid';
-let previewUri = vscode.Uri.parse('cql-schema://authority/cql-schema');
+let previewUri = vscode.Uri.parse('cql-schema://');
 
 export function registerSchemaCommand(): Array<vscode.Disposable> {
     const getViewColumn = (): vscode.ViewColumn => {

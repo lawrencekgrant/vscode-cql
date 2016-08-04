@@ -2,6 +2,7 @@ import vscode = require('vscode');
 import cassandra = require('cassandra-driver');
 import resultDocProvider = require('./cqlResultDocumentProvider');
 import uuid = require('node-uuid');
+import * as util from 'util';
 
 export let currentResults = {};
 let outputChannel = vscode.window.createOutputChannel(`CQL Output`);
@@ -44,8 +45,10 @@ export function registerExecuteCommand() : vscode.Disposable {
                 console.log('executed', err, result);
                 if(err) {
                     currentResults = err;
+                    outputChannel.appendLine(`Error executing statement: ${util.inspect(err)}`)
                 } else {
                     currentResults = result;
+                    outputChannel.appendLine(`Execution successful.`)
                 }
 
                 showResults(err, result);
@@ -59,7 +62,7 @@ export function registerResultDocumentProvider() : vscode.Disposable {
     return vscode.workspace.registerTextDocumentContentProvider('cql-result', provider);
 }
 
-export function registerAll() : vscode.Disposable[] { //I like that.. I may keep this pattern.
+export function registerAll() : vscode.Disposable[] { //I like that.. I may keep this.
     return [registerExecuteCommand(), registerResultDocumentProvider()];
 }
 
@@ -70,7 +73,7 @@ function showResults(error, results) {
         outputChannel.appendLine(new Date().toTimeString());
         outputChannel.show();
     } else {
-        let resultUri = "cql-result://api/results" + uuid.v4();
+        let resultUri = "cql-result://api/results" + uuid.v4() + `?error=${!!error}`;
         vscode.commands.executeCommand('vscode.previewHtml', resultUri, vscode.ViewColumn.Two, 'Cassandra Results')
             .then((success) => {
                 //do nothing it worked already...
