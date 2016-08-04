@@ -1,5 +1,9 @@
 import vscode = require('vscode');
 import cassandra = require('cassandra-driver');
+import resultDocProvider = require('./cqlResultDocumentProvider');
+import uuid = require('uuid');
+
+export let currentResults = {};
 
 export function registerExecuteCommand() : vscode.Disposable {
     return vscode.commands.registerCommand('cql.execute', ()=> {
@@ -36,12 +40,41 @@ export function registerExecuteCommand() : vscode.Disposable {
         client.connect(function (err, result) {
             client.execute(statement.toString(), [], { prepare: true }, function (err, result) {
                 console.log('executed', err, result);
-                let outputChannel = vscode.window.createOutputChannel(`CQL Results [${cassandraAddress}:${cassandraPort}]`);
-                outputChannel.clear();
-                outputChannel.appendLine("Results:");
-                outputChannel.appendLine(JSON.stringify(err ? err : result.rows));
-                outputChannel.show();
+                if(err) {
+                    currentResults = err;
+                } else {
+                    currentResults = result;
+                }
+
+                showResults(err, result);
             });
         });
     });
+}
+
+export function registerResultDocumentProvider() : vscode.Disposable {
+    let provider = new resultDocProvider.cqlResultDocumentProvider();
+    return vscode.workspace.registerTextDocumentContentProvider('cql-result', provider);
+}
+
+export function registerAll() : vscode.Disposable[] { //I like that.. I may keep this pattern.
+    return [registerExecuteCommand(), registerResultDocumentProvider()];
+}
+
+function showResults(error, results) {
+    if(vscode.workspace.getConfiguration("cql")["resultStyle"].location == "output") {
+        let outputChannel = vscode.window.createOutputChannel(`CQL Results`);
+        outputChannel.clear();
+        outputChannel.appendLine("Results:");
+        outputChannel.appendLine(JSON.stringify(error ? error : currentResults));
+        outputChannel.show();
+    } else {
+        let resultUri = "cql-result://api/results" + uuid.v4();
+        vscode.commands.executeCommand('vscode.previewHtml', resultUri, vscode.ViewColumn.Two, 'Cassandra Results')
+            .then((success) => {
+                //do nothing it worked already...
+            }, (reason) => {
+                vscode.window.showErrorMessage(reason);
+            });
+    }
 }

@@ -53,7 +53,6 @@ If your Cassandra endpoint is at 127.0.0.1:9042 (or localhost), then there is no
 
 *(Table and Column names come from CREATE scripts that have been opened.)*
 
-### Build Status:
+### Build Status
 [![Build Status](https://travis-ci.org/lawrencekgrant/vscode-cql.svg?branch=master)](https://travis-ci.org/lawrencekgrant/vscode-cql)
-
-#**Enjoy!** 
+# **Enjoy!** 

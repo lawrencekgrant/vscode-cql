@@ -106,10 +106,21 @@
         "cql.schema": {
           "type": "object",
           "default": {
-            "contactPoints": ["127.0.0.1"],
-            "hosts": ["127.0.0.1"]
+            "contactPoints": [
+              "127.0.0.1"
+            ],
+            "hosts": [
+              "127.0.0.1"
+            ]
           },
           "description": "Connection object for connecting to cassandra"
+        },
+        "cql.resultStyle": {
+          "type": "string",
+          "default": {
+            "format": "json",
+            "location": "sideview"
+          }
         }
       }
     },
@@ -131,6 +142,7 @@
     "vscode": "^0.11.0"
   },
   "dependencies": {
-    "cassandra-driver": "^3.0.2"
+    "cassandra-driver": "^3.0.2",
+    "uuid": "^2.0.2"
   }
 }
