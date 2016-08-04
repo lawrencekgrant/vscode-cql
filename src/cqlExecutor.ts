@@ -69,7 +69,7 @@ export function registerAll() : vscode.Disposable[] { //I like that.. I may keep
 function showResults(error, results) {
     if(vscode.workspace.getConfiguration("cql")["resultStyle"].location == "output") {
         outputChannel.appendLine("Results:");
-        outputChannel.appendLine(JSON.stringify(error ? error : currentResults));
+        outputChannel.appendLine(util.inspect(error ? error : currentResults, {depth: 64}));
         outputChannel.appendLine(new Date().toTimeString());
         outputChannel.show();
     } else {

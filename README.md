@@ -16,6 +16,8 @@ This is an extension for working with Cassandra CQL. This extension supports syn
     - Snippets (SELECT, CREATE TABLE|KEYSPACE|TRIGGER|TYPE|INDEX, UPDATE)
     - CQL Statement Execution
     - Keybinding for CQL Statement Execution
+    - Scanning for objects
+    - View schema
  
 ###CQL Statement Execution
 **Execute SQL Statement:**
@@ -33,26 +35,13 @@ If your Cassandra endpoint is at 127.0.0.1:9042 (or localhost), then there is no
      "contactPoints": ["127.0.0.1"],
      "hosts": ["127.0.0.1"]
  }`
-
-### Other
-   - Task List:
-    - ~~Execute Statements~~ (done)
-    - ~~Configure extension~~ (done)
-    - Context for Intellisense *(some)* 
-    - ~~Better Internal Structure~~ (done)
-    - Symbols functionality
-    - Document
-    - Workspace
-    - ~~Search Cassandra for symbols~~
-    - ~~Better Syntax Highlighting~~ (done)
-    - Move this task list Issues
-
+ - **cql.resultStyle** *(object)*: Configures where and how you will view results. There are two options:
+  - format: *json* or *tabular*
+  - location: If set to *output* results are routed to the CQL Output window instead of a pane.
 
 ### For more information
 * [project on github](https://github.com/lawrencekgrant/vscode-cql)
 
-*(Table and Column names come from CREATE scripts that have been opened.)*
-
 ### Build Status
 [![Build Status](https://travis-ci.org/lawrencekgrant/vscode-cql.svg?branch=master)](https://travis-ci.org/lawrencekgrant/vscode-cql)
-# **Enjoy!** 
+# **Enjoy with care** 
