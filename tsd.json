@@ -7,6 +7,18 @@
   "installed": {
     "uuid/UUID.d.ts": {
       "commit": "0d1048c7bbac722c592c5e9af54e310fc5658053"
+    },
+    "node-uuid/node-uuid.d.ts": {
+      "commit": "0d1048c7bbac722c592c5e9af54e310fc5658053"
+    },
+    "node/node.d.ts": {
+      "commit": "0d1048c7bbac722c592c5e9af54e310fc5658053"
+    },
+    "node-uuid/node-uuid-cjs.d.ts": {
+      "commit": "0d1048c7bbac722c592c5e9af54e310fc5658053"
+    },
+    "node-uuid/node-uuid-base.d.ts": {
+      "commit": "0d1048c7bbac722c592c5e9af54e310fc5658053"
     }
   }
 }

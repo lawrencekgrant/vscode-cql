@@ -10,7 +10,7 @@
 {
     "version": "0.1.0",
     "command": "npm",
-    "isShellCommand": true,
+    "isShellCommand": false,
     "showOutput": "silent",
     "args": ["run", "compile"],
     "isWatching": false

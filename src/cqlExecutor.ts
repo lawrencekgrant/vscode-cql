@@ -1,9 +1,10 @@
 import vscode = require('vscode');
 import cassandra = require('cassandra-driver');
 import resultDocProvider = require('./cqlResultDocumentProvider');
-import uuid = require('uuid');
+import uuid = require('node-uuid');
 
 export let currentResults = {};
+let outputChannel = vscode.window.createOutputChannel(`CQL Output`);
 
 export function registerExecuteCommand() : vscode.Disposable {
     return vscode.commands.registerCommand('cql.execute', ()=> {
@@ -35,7 +36,8 @@ export function registerExecuteCommand() : vscode.Disposable {
             statement = vscode.window.activeTextEditor.document.getText(new vscode.Range(selection.start, selection.end));
         }
         console.log("statement: " + statement);
-        vscode.window.showInformationMessage(`Executing statement:"${statement}" against Cassandra @  + ${cassandraAddress}:${cassandraPort}`);
+        outputChannel.show();
+        outputChannel.appendLine(`Executing statement:"${statement}" against Cassandra @  + ${cassandraAddress}:${cassandraPort}`);
 
         client.connect(function (err, result) {
             client.execute(statement.toString(), [], { prepare: true }, function (err, result) {
@@ -63,10 +65,9 @@ export function registerAll() : vscode.Disposable[] { //I like that.. I may keep
 
 function showResults(error, results) {
     if(vscode.workspace.getConfiguration("cql")["resultStyle"].location == "output") {
-        let outputChannel = vscode.window.createOutputChannel(`CQL Results`);
-        outputChannel.clear();
         outputChannel.appendLine("Results:");
         outputChannel.appendLine(JSON.stringify(error ? error : currentResults));
+        outputChannel.appendLine(new Date().toTimeString());
         outputChannel.show();
     } else {
         let resultUri = "cql-result://api/results" + uuid.v4();

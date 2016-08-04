@@ -1,6 +1,6 @@
 import vscode = require("vscode");
 import cqlSchemaDocumentProvider = require('./cqlSchemaDocumentProvider');
-
+import * as uuid from 'node-uuid';
 let previewUri = vscode.Uri.parse('cql-schema://authority/cql-schema');
 
 export function registerSchemaCommand(): Array<vscode.Disposable> {
@@ -12,7 +12,7 @@ export function registerSchemaCommand(): Array<vscode.Disposable> {
     
 
     let executeRegistration = vscode.commands.registerCommand("cql.schema", () => {
-        vscode.commands.executeCommand('vscode.previewHtml', previewUri, getViewColumn(), 'Cassandra Schema')
+        vscode.commands.executeCommand('vscode.previewHtml', previewUri + uuid.v4().toString(), getViewColumn(), 'Cassandra Schema')
             .then((success) => {
                 //do nothing it worked already...
             }, (reason) => {

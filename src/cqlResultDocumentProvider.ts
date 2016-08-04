@@ -1,50 +1,79 @@
 import * as vscode from 'vscode';   
 import * as executor from './cqlExecutor';
+import * as util from 'util';
 
 export class cqlResultDocumentProvider implements vscode.TextDocumentContentProvider {
     public provideTextDocumentContent(uri: vscode.Uri) {
         console.log('current results', executor.currentResults);
-        return getTableFromResults(executor.currentResults);
+        return vscode.workspace.getConfiguration("cql")['resultStyle'].format === 'tabular'
+            ? getTableFromResults(executor.currentResults)
+            : getJsonFromResults(executor.currentResults);
     }
+}
+
+function getJsonFromResults(results) : string {
+    let returnString = '<div><pre>';
+    returnString += util.inspect(results, { depth: 64 });
+    returnString += '</pre></div>'
+    return returnString;
 }
 
 function getTableFromResults(results) : string {
     let isFirstRow = true;
+
+    let styleString = '<style>'
+    styleString += getTableStyle();
+    styleString += '</style>'
+    
     let metaDataString = '<div>'
-    for(var property in results) {
-        if(results.hasOwnProperty(property) && property != 'rows')
-            metaDataString += `<div>${property}:${results[property]}</div>`;
-    }
-    metaDataString += '</div>'
+        metaDataString += `<div><strong>Queried Host:</strong>${results.info.queriedHost}</div>`;
+        metaDataString += `<div><strong>Achieved Consistency</strong>: ${results.info.achievedConsistency}`;
+        metaDataString += `<div><strong>Rows</strong>: ${results.rowLength}`
+    metaDataString += '</div><br/>'
 
     let returnString = '<table>';
+    let headerString = '<thead class="table-header"><tr>'
+    for (var column in results.columns) {
+        if(results.columns.hasOwnProperty(column))
+            headerString += `<th>${results.columns[column].name}</th>`;
+    }
+    
+    headerString += '</tr></thead>';
 
+    returnString += headerString;
+
+    let rowCount = 0;
     results.rows.forEach(row => {
-        if(isFirstRow) {
-
-            let headerString = '<thead><tr>'
-
-            for (var column in row) {
-                if(row.hasOwnProperty(column))
-                    headerString += `<th>${column}</th>`;
-            }
-            
-            headerString += '</tr></thead>';
-            returnString += headerString;
-            isFirstRow = false;
-        }
-
-        let rowString = "<tr>"
+        let rowString = `<tr class="tablerow-${(++rowCount % 2) ? 'light' : 'dark'}">`
         for (var column in row) {
             if(row.hasOwnProperty(column))
-                rowString += `<td>${row[column]}</td>`;
+                rowString += `<td>${util.inspect(row[column], {depth:3}).toString()}</td>`;
         }
 
         returnString += rowString;
-
+        /* //TODO: Repeat header every x, this should be an option before it is implemented
+        if(!(rowCount % 10))
+            returnString += headerString;
+        */
     });
 
     returnString += '</table>';
 
-    return metaDataString + returnString;
+    return styleString + metaDataString + returnString; 
+}
+
+function getTableStyle() {
+    return `
+        .tablerow-light {
+            background-color: rgba(255,255,255, .15);
+        }
+
+        .tablerow-dark {
+            background-color: rgba(0,0,0, .15);
+        }
+
+        .table-header {
+            background-color: rgba(0,0,0,.25);;
+        }
+    `;
 }

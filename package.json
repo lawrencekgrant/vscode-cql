@@ -133,7 +133,7 @@
   },
   "scripts": {
     "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-    "compile": "node ./node_modules/vscode/bin/compile -watch -p ./",
+    "compile": "node ./node_modules/vscode/bin/compile -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "node ./node_modules/vscode/bin/test"
   },
@@ -143,6 +143,7 @@
   },
   "dependencies": {
     "cassandra-driver": "^3.0.2",
+    "util": "^0.10.3",
     "uuid": "^2.0.2"
   }
 }
