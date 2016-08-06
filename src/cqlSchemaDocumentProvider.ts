@@ -4,8 +4,7 @@ import cqlTypes = require('./types/cqlTypes');
 
 export class cqlSchemaDocumentProvider implements vscode.TextDocumentContentProvider {
     public provideTextDocumentContent(uri: vscode.Uri) {
-        //alert(cqlCompletionItems.scannedKeyspaces.length);
-
+        
         let tables = cqlCompletionItems.scannedTables.map(table => { return `<li>${table.Keyspace.Name}.${table.Name}</li>`; }).join();
         let columns = cqlCompletionItems.scannedColumns.map(col => `<li>${col.ColumnFamily.Keyspace.Name}.${col.ColumnFamily.Name}.${col.Name}</li>`).join();
 
@@ -15,13 +14,14 @@ export class cqlSchemaDocumentProvider implements vscode.TextDocumentContentProv
                     <style>${getStyleData()}</style>
                 </head>
                 <body>
-                    ${cqlCompletionItems.scannedKeyspaces.map(element => getHeirarchicalListFromKeyspace(element)).join()}
+                ${cqlCompletionItems.scannedKeyspaces.map(element => getHeirarchicalListFromKeyspace(element)).join()}
                 <script type="javascript">
                     document.body.onLoad = function(){document.body.style.backgroundColor = 'red'};    
                 </script>    
                 </body>
 
             </html>`;
+
     }
 }
 
@@ -30,24 +30,30 @@ function getHeirarchicalListFromKeyspace(keyspace: cqlTypes.Keyspace) {
 
     let tableImage = `<img width="16pt" height="16pt" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAAAVklEQVR4Ae2WMQrAMAwDb3J/H9BLTV6QQjePFYHS4NOm4SaBzflciGS9zEQEBbHMiELaoqTwlF7znahFTn4k8psW9SB7kC2auw6kbNGgENYTkQyC07kBd7Q2CnGIr7YAAAAASUVORK5CYII=">`;
 
-    let columnImage = `<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAh0lEQVR4Ae3WQQ6CMBCF4f80lcObYDkYEmGpPheup2I7BIPzv22TL2k35cDpPbdzAbCyExduqHILAx2FElfUuKlEnJHDMmajCzBjdkcuM3sE8D9AbfsDz8MBWrcAPu93HlkBfAvIXgAbA7UFEAAsW39+Bxegx6xjQo0bSVAiMnPD5fQkosi5F5S6PvA1GSEvAAAAAElFTkSuQmCC" width="16pt" height="16pt"/>`;
+    let columnImage = `<img src="" width="16pt" height="16pt"/>`;
 
     let address = `${vscode.workspace.getConfiguration("cql")["connection"].contactPoints[0]}`;
 
     return `<div>
         ${address}
         <ul class="tree">
-            <li>${databaseImage}${keyspace.Name}
-            <ul>
-                ${keyspace.ColumnFamilies.map(columnFam =>
-                `<li>${tableImage}${columnFam.Name}
-                    <ul>
-                        ${columnFam.Columns.map(column => 
-                            `<li>${columnImage}${column.Name} (${htmlEscape(column.Type)})</li>`
-                            ).join('')}
-                    </ul>
-                </li>`).join('')}
-            </li></ul>
+            <li>
+                <span/>
+                <div class=" schema-icon database">&nbsp;</div>
+                ${keyspace.Name}
+                <ul>
+                    ${keyspace.ColumnFamilies.map(columnFam =>
+                    `<li>
+                        <span/>
+                        <div class="schema-icon table">&nbsp;</div>
+                        ${columnFam.Name}
+                        <ul>
+                            ${columnFam.Columns.map(column => 
+                                `<li><div class="schema-icon column">&nbsp;</div>${column.Name} (${htmlEscape(column.Type)})</li>`
+                                ).join('')}
+                        </ul>
+                    </li>`).join('')}
+                </li></ul>
     </ul></div>`;
 }
 
@@ -100,7 +106,7 @@ function getStyleData() {
     .tree li:before {
     content:"";
     display:block;
-    width:10px;
+    width:24px;
     height:0;
     border-top:1px solid;
     margin-top:-1px;
@@ -127,6 +133,51 @@ function getStyleData() {
 
     .vscode-high-contrast {
         color: white;
+    }
+
+    .schema-icon {
+        width: 20px;
+        height: 20px;
+        float: left;
+        background-size: 100% 100%;
+        background-repeat: none;
+        background-position: center;
+    }
+
+    .vscode-light .database {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAABIAAAASABGyWs+AAAACXZwQWcAAAAYAAAAGAB4TKWmAAAAw0lEQVRIx+3VvYkCURSG4UcHjI1MjKYIsYWFxRLswG7swBKWDSxBsAdNTMxMBZ0x8MwGy65zR0ZM5oUvuecP7ne4l44aeg9iGT5CE+QYRuyEPbZYh65NBs+wQ5moXdQkMUfRoHmlImprOTzRvNLhd7N+I8da4uVXNPa8yeOUASv39c3wiSU2OOIcOsbZMnKyqFmlDCjx5b73qeRRU6YkV1t0wTcWmGKEQWgUZ4vIufhni/6iM7mWzuQkWnuu3/bhdPxwAyw0sUuyXGTSAAAAAElFTkSuQmCC);
+    }
+
+    .vscode-high-contrast .database {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAABIAAAASABGyWs+AAAACXZwQWcAAAAYAAAAGAB4TKWmAAAA4ElEQVRIx+2VvY3CQBCFv8UNXA6Ji6AHJEQJFHJ10IFLIHIJSPRgEi4gIyWA7wIPEtL58GIhXXB+0iQ7f6s383ZhRA/Sbw61ABZhc6AEPsJ9Bg7AHqiBOqV0ze6qrtTGfDTqKrf4Wr29UPyOm7rupUg9AtOBlH+llGaPB5OBhbLR1eATcEAtI7cnSqdDh6z2U6tWalILdalu1J16Ui9hpzjbREwROVVOA9WtWmZzo2Xk/KD22RZdCRHRCupAKzBoBVfSCvAuxoKOLeq6zVt1MA75Pw45mrztuf6bD2fEI74Bu7xr6tIzBXwAAAAASUVORK5CYII=);
+    }
+
+    .vscode-dark .database {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAABIAAAASABGyWs+AAAACXZwQWcAAAAYAAAAGAB4TKWmAAAA4ElEQVRIx+2VvY3CQBCFv8UNXA6Ji6AHJEQJFHJ10IFLIHIJSPRgEi4gIyWA7wIPEtL58GIhXXB+0iQ7f6s383ZhRA/Sbw61ABZhc6AEPsJ9Bg7AHqiBOqV0ze6qrtTGfDTqKrf4Wr29UPyOm7rupUg9AtOBlH+llGaPB5OBhbLR1eATcEAtI7cnSqdDh6z2U6tWalILdalu1J16Ui9hpzjbREwROVVOA9WtWmZzo2Xk/KD22RZdCRHRCupAKzBoBVfSCvAuxoKOLeq6zVt1MA75Pw45mrztuf6bD2fEI74Bu7xr6tIzBXwAAAAASUVORK5CYII=);
+    }
+
+    .vscode-light .table {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAAAVklEQVR4Ae2WMQrAMAwDb3J/H9BLTV6QQjePFYHS4NOm4SaBzflciGS9zEQEBbHMiELaoqTwlF7znahFTn4k8psW9SB7kC2auw6kbNGgENYTkQyC07kBd7Q2CnGIr7YAAAAASUVORK5CYII=);
+    }
+
+    .vscode-high-contrast .table {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAcElEQVRYw+3XOwoAIQxFUVcj7t7PwkTU/k0znanGBEd4t7TIAREhzrEfhYCEjt0mCoI8vkGrJhBI0CyvQFcFxgq8WZ0TIHAToBWB7wCfKQEC/Cr4FxEgcBiY1gtIUQWi7RJY4eU9M2PsXw6iOJ4d6wEaUuakFHEU1gAAAABJRU5ErkJggg==);
+    }
+
+    .vscode-dark .table {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAcElEQVRYw+3XOwoAIQxFUVcj7t7PwkTU/k0znanGBEd4t7TIAREhzrEfhYCEjt0mCoI8vkGrJhBI0CyvQFcFxgq8WZ0TIHAToBWB7wCfKQEC/Cr4FxEgcBiY1gtIUQWi7RJY4eU9M2PsXw6iOJ4d6wEaUuakFHEU1gAAAABJRU5ErkJggg==);
+    }
+
+    .vscode-light .column {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAh0lEQVR4Ae3WQQ6CMBCF4f80lcObYDkYEmGpPheup2I7BIPzv22TL2k35cDpPbdzAbCyExduqHILAx2FElfUuKlEnJHDMmajCzBjdkcuM3sE8D9AbfsDz8MBWrcAPu93HlkBfAvIXgAbA7UFEAAsW39+Bxegx6xjQo0bSVAiMnPD5fQkosi5F5S6PvA1GSEvAAAAAElFTkSuQmCC);
+    }
+
+    .vscode-high-contrast .column {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAiklEQVRYw+3WQQ5AMBBGYaehh5dQB0OwxLOxbaM13fC/tcyXdKRpVX027qy+E/AUoKFnIbeNARcbXzPxtjlC0GKRDwOjCbCGgd0ECC+cQ8BvgGI3cHng/BqQulQB9oD9khGQCKReaALsAf2mAjKArfTjdzABujDgmF+PH6ljp+jwrPmHQxcdr1RWFzwBh9FiOjc0AAAAAElFTkSuQmCC);
+    }
+
+    .vscode-dark .column {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAQAAAD9CzEMAAAAiklEQVRYw+3WQQ5AMBBGYaehh5dQB0OwxLOxbaM13fC/tcyXdKRpVX027qy+E/AUoKFnIbeNARcbXzPxtjlC0GKRDwOjCbCGgd0ECC+cQ8BvgGI3cHng/BqQulQB9oD9khGQCKReaALsAf2mAjKArfTjdzABujDgmF+PH6ljp+jwrPmHQxcdr1RWFzwBh9FiOjc0AAAAAElFTkSuQmCC);
     }
 
     .vscode-light code {
