@@ -8,16 +8,13 @@ export function registerOnDidOpenTextDocument(): vscode.Disposable {
     return vscode.workspace.onDidOpenTextDocument(function(evt) {
         console.log(evt);
         let sqlText = evt.getText();
-    
-    
-    
-
         var source = evt.getText().replace(/(\r\n|\n|\r)/gm,"");
         
         console.log('source', source);
         var re = /(?:create table)\s(.*)\(/i;
-        var tableName = source.match(/(?:create table)\s(.*)\(/i)[1];
-        console.log(source.match(/(?:create table)\s(.*)\(/i));
+        var match = source.match(/(?:create table)\s(.*)\(/i);
+        console.log(match);
+        var tableName = match[1];
 
         if (tableName) {
             if(cqlCompletionItems.completionTables.indexOf(tableName) === -1) {

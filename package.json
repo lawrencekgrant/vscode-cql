@@ -154,12 +154,14 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
+    "@types/cassandra-driver": "^0.8.10",
+    "@types/node-uuid": "0.0.28",
     "typescript": "^1.8.5",
     "vscode": "^0.11.0"
   },
   "dependencies": {
     "cassandra-driver": "^3.0.2",
-    "util": "^0.10.3",
-    "uuid": "^2.0.2"
+    "node-uuid": "^1.4.7",
+    "util": "^0.10.3"
   }
 }
