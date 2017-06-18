@@ -2,13 +2,13 @@
   "name": "cql",
   "displayName": "cql",
   "description": "Cassandra CQL extension for VS Code.",
-  "version": "0.7.0",
+  "version": "0.8.1",
   "publisher": "LawrenceGrant",
   "author": {
     "name": "Lawrence Grant"
   },
   "engines": {
-    "vscode": "^1.0.0"
+    "vscode": "^1.13.1"
   },
   "license": "MIT",
   "bugs": {
@@ -59,6 +59,14 @@
         "title": "Show Schema"
       }
     ],
+    "views": {
+        "explorer": [
+            {
+                "id": "cqlTables",
+                "name": "Cassandra Tables"
+            }
+        ]
+    },
     "languages": [
       {
         "id": "cql",
@@ -148,16 +156,20 @@
     ]
   },
   "scripts": {
-    "vscode:prepublish": "node ./node_modules/vscode/bin/compile",
-    "compile": "node ./node_modules/vscode/bin/compile -p ./",
+
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
     "@types/cassandra-driver": "^0.8.10",
     "@types/node-uuid": "0.0.28",
-    "typescript": "^1.8.5",
-    "vscode": "^0.11.0"
+    "typescript": "^2.0.3",
+    "vscode": "^1.0.0",
+    "mocha": "^2.3.3",
+    "@types/node": "^6.0.40",
+    "@types/mocha": "^2.2.32"
   },
   "dependencies": {
     "cassandra-driver": "^3.0.2",

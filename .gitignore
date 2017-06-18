@@ -5,3 +5,4 @@
 **/npm-debug.log.*
 **/*.vsix
 /packages
+**/.DS_Store
