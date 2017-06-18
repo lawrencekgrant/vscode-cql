@@ -2,6 +2,7 @@ sudo: false
 
 os:
   - osx
+  - linux
 
 before_install:
   - if [ $TRAVIS_OS_NAME == "linux" ]; then
@@ -15,4 +16,9 @@ install:
   - npm run vscode:prepublish
 
 script:
-#  - npm test --silent
+  - npm test --silent
+
+language: node_js
+node_js:
+  - "iojs"
+  - "6"
