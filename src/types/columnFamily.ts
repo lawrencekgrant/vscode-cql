@@ -1,6 +1,5 @@
 import { cqlItem } from './cqlItem';
-import { keySpace } from './keySpace';
-import { column } from './column';
+import { keySpace, column } from './cqlItemTypes';
 
 export class columnFamily extends cqlItem {
     Keyspace: keySpace;
