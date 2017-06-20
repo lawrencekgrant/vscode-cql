@@ -2,7 +2,7 @@ import vscode = require("vscode");
 import cassandra = require("cassandra-driver");
 import cqlCompletionItems = require("./cqlCompletionItems");
 
-import { Keyspace, ColumnFamily, Column } from "./types/cqlTypes";
+import { keySpace, columnFamily, column } from "./types/cqlItemTypes";
 
 export function registerScanCommand(): vscode.Disposable {
     return vscode.commands.registerCommand("cql.scan", () => {
@@ -74,74 +74,74 @@ export class CqlCassandraScanner {
         });
     }
 
-    private addCompletionKeyspace(keyspace: Keyspace) {
-        if (cqlCompletionItems.completionKeyspaces.indexOf(keyspace.Name) > -1) {
-            console.error(`Already found keyspace ${keyspace.Name}, will not add again.`);
+    private addCompletionKeyspace(keyspace: keySpace) {
+        if (cqlCompletionItems.completionKeyspaces.indexOf(keyspace.name) > -1) {
+            console.error(`Already found keyspace ${keyspace.name}, will not add again.`);
             return;
         }
 
         cqlCompletionItems.scannedKeyspaces.push(keyspace);
 
-        cqlCompletionItems.completionKeyspaces.push(keyspace.Name);
+        cqlCompletionItems.completionKeyspaces.push(keyspace.name);
 
-        let item = new vscode.CompletionItem(keyspace.Name);
-        item.detail = `Keyspace: ${keyspace.Name}`;
-        item.filterText = keyspace.Name;
-        item.insertText = keyspace.Name;
+        let item = new vscode.CompletionItem(keyspace.name);
+        item.detail = `Keyspace: ${keyspace.name}`;
+        item.filterText = keyspace.name;
+        item.insertText = keyspace.name;
         item.kind = vscode.CompletionItemKind.Module;
 
         console.log("Adding completion item for keyspace...", item);
         cqlCompletionItems.completionItemList.push(item);
     }
 
-    private addColumnCompletionItem(column: Column) {
-        let qualifiedColumnName = `${column.ColumnFamily.Keyspace.Name}.${column.ColumnFamily.Name}.${column.Name}`;
+    private addColumnCompletionItem(column: column) {
+        let qualifiedColumnName = `${column.columnFamily.Keyspace.name}.${column.columnFamily.name}.${column.name}`;
         if (cqlCompletionItems.completionColumns.indexOf(qualifiedColumnName) > -1) {
             console.error(`Already found column ${qualifiedColumnName}, will not add again.`);
             return;
         }
 
         cqlCompletionItems.scannedColumns.push(column);
-        column.ColumnFamily.Columns.push(column)
+        column.columnFamily.Columns.push(column)
 
         cqlCompletionItems.completionColumns.push(qualifiedColumnName);
 
-        let item = new vscode.CompletionItem(column.Name);
-        item.detail = `Column: ${column.Name} for column family ${column.ColumnFamily.Name} in keyspace ${column.ColumnFamily.Keyspace.Name}`;
-        item.filterText = column.Name;
-        item.insertText = column.Name;
+        let item = new vscode.CompletionItem(column.name);
+        item.detail = `column: ${column.name} for column family ${column.columnFamily.name} in keyspace ${column.columnFamily.Keyspace.name}`;
+        item.filterText = column.name;
+        item.insertText = column.name;
         item.kind = vscode.CompletionItemKind.Field;
 
         cqlCompletionItems.completionItemList.push(item);
     }
 
-    private addColumnFamilyCompletionItem(columnFamily: ColumnFamily) {
-        if (cqlCompletionItems.completionColumnFamilies.indexOf(columnFamily.Name) > -1) {
-            console.error(`Already found column family ${columnFamily.Name}, will not add again.`);
+    private addColumnFamilyCompletionItem(columnFamily: columnFamily) {
+        if (cqlCompletionItems.completionColumnFamilies.indexOf(columnFamily.name) > -1) {
+            console.error(`Already found column family ${columnFamily.name}, will not add again.`);
             return;
         }
 
         cqlCompletionItems.scannedTables.push(columnFamily);
         columnFamily.Keyspace.ColumnFamilies.push(columnFamily); //TODO: this is crazy... come back to this..
 
-        cqlCompletionItems.completionColumnFamilies.push(columnFamily.Name);
+        cqlCompletionItems.completionColumnFamilies.push(columnFamily.name);
 
-        let item = new vscode.CompletionItem(columnFamily.Name);
-        item.detail = `Column family ${columnFamily.Name} from keyspace "${columnFamily.Keyspace.Name}"`;
-        item.filterText = columnFamily.Name;
-        item.insertText = columnFamily.Name;
+        let item = new vscode.CompletionItem(columnFamily.name);
+        item.detail = `column family ${columnFamily.name} from keyspace "${columnFamily.Keyspace.name}"`;
+        item.filterText = columnFamily.name;
+        item.insertText = columnFamily.name;
         item.kind = vscode.CompletionItemKind.Class;
 
         cqlCompletionItems.completionItemList.push(item);
     }
 
-    private getKeyspaces(): Promise<Array<Keyspace>> {
+    private getKeyspaces(): Promise<Array<keySpace>> {
         return new Promise((resolve, reject) => {
             let statement = `select keyspace_name from system.schema_keyspaces`;
 
             this.executeStatement(statement)
                 .then((result) => {
-                    resolve(result.rows.filter(row => row.keyspace_name.indexOf("system") !== 0).map(row => new Keyspace(row.keyspace_name)));
+                    resolve(result.rows.filter(row => row.keyspace_name.indexOf("system") !== 0).map(row => new keySpace(row.keyspace_name)));
                 })
                 .catch(error => {
                     if(error.message && error.message.indexOf("unconfigured table") > -1)
@@ -149,7 +149,7 @@ export class CqlCassandraScanner {
                         statement = `select keyspace_name from system_schema.keyspaces`;
                         this.executeStatement(statement)
                         .then((result) => {
-                            resolve(result.rows.filter(row => row.keyspace_name.indexOf("system") !== 0).map(row => new Keyspace(row.keyspace_name)));
+                            resolve(result.rows.filter(row => row.keyspace_name.indexOf("system") !== 0).map(row => new keySpace(row.keyspace_name)));
                         })
                         .catch(err=>reject(err));
                     } else {
@@ -159,23 +159,23 @@ export class CqlCassandraScanner {
         });
     }
 
-    private getColumnFamilies(keyspaces: Array<Keyspace>): Promise<Array<ColumnFamily>> {
+    private getColumnFamilies(keyspaces: Array<keySpace>): Promise<Array<columnFamily>> {
         return new Promise((resolve, reject) => {
             let keyspacePromises = keyspaces.map(keyspace => {
-                return new Promise<Array<ColumnFamily>>((resolve, reject) => {
-                    let statement = `select columnfamily_name from system.schema_columnfamilies where keyspace_name = '${keyspace.Name}'`;
+                return new Promise<Array<columnFamily>>((resolve, reject) => {
+                    let statement = `select columnfamily_name from system.schema_columnfamilies where keyspace_name = '${keyspace.name}'`;
 
                     this.executeStatement(statement)
                         .then(result => {
-                            resolve(result.rows.map(row => new ColumnFamily(keyspace, row.columnfamily_name)));
+                            resolve(result.rows.map(row => new columnFamily(keyspace, row.columnfamily_name)));
                         })
                         .catch(error => {
                             if(error.message && error.message.indexOf('unconfigured') > -1) {
-                                let statement = `select table_name from system_schema.tables where keyspace_name = '${keyspace.Name}'`;
+                                let statement = `select table_name from system_schema.tables where keyspace_name = '${keyspace.name}'`;
 
                                 this.executeStatement(statement)
                                     .then(result => {
-                                        resolve(result.rows.map(row => new ColumnFamily(keyspace, row.table_name)));
+                                        resolve(result.rows.map(row => new columnFamily(keyspace, row.table_name)));
                                     })
                                     .catch(err=>reject(err));
                             } else {
@@ -185,7 +185,7 @@ export class CqlCassandraScanner {
                 });
             });
 
-            let returnColumnFamilies = new Array<ColumnFamily>();
+            let returnColumnFamilies = new Array<columnFamily>();
             Promise.all(keyspacePromises)
                 .then(columnFamiliesSet => {
                     columnFamiliesSet.forEach(columnFamilySet => 
@@ -197,23 +197,23 @@ export class CqlCassandraScanner {
         });
     }
 
-    private getColumns(columnFamilies: Array<ColumnFamily>): Promise<Array<Column>> {
+    private getColumns(columnFamilies: Array<columnFamily>): Promise<Array<column>> {
         return new Promise((resolve, reject) => {
             let columnFamilyPromises = columnFamilies.map(columnFamily => {
-                return new Promise<Array<Column>>((resolve, reject) => {
-                    let statement = `select column_name, type from system.schema_columns where keyspace_name = '${columnFamily.Keyspace.Name}' and columnfamily_name = '${columnFamily.Name}'`;
+                return new Promise<Array<column>>((resolve, reject) => {
+                    let statement = `select column_name, type from system.schema_columns where keyspace_name = '${columnFamily.Keyspace.name}' and columnfamily_name = '${columnFamily.name}'`;
 
                     this.executeStatement(statement)
                         .then(result => {
-                            resolve(result.rows.map(row => new Column(columnFamily, row.column_name)));
+                            resolve(result.rows.map(row => new column(columnFamily, row.column_name)));
                         })
                         .catch(error => {
                             if(error.message && error.message.indexOf('unconfigured') > -1) {
-                                let statement = `select column_name, type from system_schema.columns where keyspace_name = '${columnFamily.Keyspace.Name}' and table_name = '${columnFamily.Name}'`;
+                                let statement = `select column_name, type from system_schema.columns where keyspace_name = '${columnFamily.Keyspace.name}' and table_name = '${columnFamily.name}'`;
 
                                 this.executeStatement(statement)
                                     .then(result => {
-                                        resolve(result.rows.map(row => new Column(columnFamily, row.column_name, row.type)));
+                                        resolve(result.rows.map(row => new column(columnFamily, row.column_name, row.type)));
                                     })
                                     .catch(err => reject(err));
                             } else {
@@ -225,7 +225,7 @@ export class CqlCassandraScanner {
 
             Promise.all(columnFamilyPromises)
                 .then(resultColumnSets => {
-                    let returnColumns = new Array<Column>();
+                    let returnColumns = new Array<column>();
                     resultColumnSets.forEach(columnSet => 
                         (columnSet as any).forEach(column => 
                             returnColumns.push(column)));

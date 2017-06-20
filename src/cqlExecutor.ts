@@ -1,7 +1,7 @@
 import vscode = require('vscode');
 import cassandra = require('cassandra-driver');
 import resultDocProvider = require('./cqlResultDocumentProvider');
-import uuid = require('node-uuid');
+import * as uuid from 'uuid';
 import * as util from 'util';
 
 export let currentResults = {};

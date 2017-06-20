@@ -1,34 +1,32 @@
 // Because these objects are so small I will keep them in a single file. If they grow we can refactor.
-import { cqlType } from './cqlType';
-
-export class Keyspace extends cqlType {
-    ColumnFamilies: ColumnFamily[];
-
-    constructor(keyspaceName: string) {
-        super(keyspaceName)
-        this.Name = keyspaceName;
-        this.ColumnFamilies = [];
-    }
+export const enum cqlItemTypes {
+    keyspace = 1,
+    columnFamily = 2,
+    column = 3,
+    unknown = 4
 }
 
-export class ColumnFamily extends cqlType {
-    Keyspace: Keyspace;
-    Columns: Column[];
-
-    constructor(keyspace: Keyspace, columnFamilyName: string) {
-        super(columnFamilyName);
-        this.Keyspace = keyspace;
-        this.Columns = [];
-    }
-}
-
-export class Column extends cqlType {
-    ColumnFamily: ColumnFamily;
-    Type: string
-
-    constructor(columnFamily: ColumnFamily, columnName: string, typeName: string = '') {
-        super(columnName);
-        this.ColumnFamily = columnFamily;
-        this.Type = typeName;
-    }
+export const enum cqlDataTypes {
+    unknown = 0,
+    ascii = 1,
+    bigint = 2,
+    blob = 3,
+    boolean = 4,
+    counter = 5,
+    decimal = 6,
+    double = 7,
+    float = 8,
+    frozen = 9,
+    inet = 10,
+    int = 11,
+    list = 12,
+    map = 13,
+    set = 14,
+    text = 15,
+    timestamp = 16,
+    timeuuid = 17,
+    tuple = 18,
+    uuid = 19,
+    varchar = 20,
+    varint = 21
 }

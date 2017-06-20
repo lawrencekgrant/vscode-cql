@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
-import cqlCompletionItems = require('./cqlCompletionItems');
-import cqlTypes = require('./types/cqlTypes');
+import * as cqlCompletionItems from './cqlCompletionItems';
+import { cqlItemTypes } from './types/cqlTypes';
+import { keySpace } from './types/keySpace';
 
 export class cqlSchemaDocumentProvider implements vscode.TextDocumentContentProvider {
     public provideTextDocumentContent(uri: vscode.Uri) {
         
-        let tables = cqlCompletionItems.scannedTables.map(table => { return `<li>${table.Keyspace.Name}.${table.Name}</li>`; }).join();
-        let columns = cqlCompletionItems.scannedColumns.map(col => `<li>${col.ColumnFamily.Keyspace.Name}.${col.ColumnFamily.Name}.${col.Name}</li>`).join();
+        let tables = cqlCompletionItems.scannedTables.map(table => { return `<li>${table.Keyspace.name}.${table.name}</li>`; }).join();
+        let columns = cqlCompletionItems.scannedColumns.map(col => `<li>${col.columnFamily.Keyspace.name}.${col.columnFamily.name}.${col.name}</li>`).join();
 
         return `
             <html>
@@ -25,7 +26,7 @@ export class cqlSchemaDocumentProvider implements vscode.TextDocumentContentProv
     }
 }
 
-function getHeirarchicalListFromKeyspace(keyspace: cqlTypes.Keyspace) {
+function getHeirarchicalListFromKeyspace(keyspace: keySpace) {
     let databaseImage = `<img width="16pt" height="16pt" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAABIAAAASABGyWs+AAAACXZwQWcAAAAYAAAAGAB4TKWmAAAAw0lEQVRIx+3VvYkCURSG4UcHjI1MjKYIsYWFxRLswG7swBKWDSxBsAdNTMxMBZ0x8MwGy65zR0ZM5oUvuecP7ne4l44aeg9iGT5CE+QYRuyEPbZYh65NBs+wQ5moXdQkMUfRoHmlImprOTzRvNLhd7N+I8da4uVXNPa8yeOUASv39c3wiSU2OOIcOsbZMnKyqFmlDCjx5b73qeRRU6YkV1t0wTcWmGKEQWgUZ4vIufhni/6iM7mWzuQkWnuu3/bhdPxwAyw0sUuyXGTSAAAAAElFTkSuQmCC"/>`;
 
     let tableImage = `<img width="16pt" height="16pt" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAQAAABLCVATAAAAVklEQVR4Ae2WMQrAMAwDb3J/H9BLTV6QQjePFYHS4NOm4SaBzflciGS9zEQEBbHMiELaoqTwlF7znahFTn4k8psW9SB7kC2auw6kbNGgENYTkQyC07kBd7Q2CnGIr7YAAAAASUVORK5CYII=">`;
@@ -40,16 +41,16 @@ function getHeirarchicalListFromKeyspace(keyspace: cqlTypes.Keyspace) {
             <li>
                 <span/>
                 <div class=" schema-icon database">&nbsp;</div>
-                ${keyspace.Name}
+                ${keyspace.name}
                 <ul>
                     ${keyspace.ColumnFamilies.map(columnFam =>
                     `<li>
                         <span/>
                         <div class="schema-icon table">&nbsp;</div>
-                        ${columnFam.Name}
+                        ${columnFam.name}
                         <ul>
                             ${columnFam.Columns.map(column => 
-                                `<li><div class="schema-icon column">&nbsp;</div>${column.Name} (${htmlEscape(column.Type)})</li>`
+                                `<li><div class="schema-icon column">&nbsp;</div>${column.name} (${htmlEscape(column.type)})</li>`
                                 ).join('')}
                         </ul>
                     </li>`).join('')}
