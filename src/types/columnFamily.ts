@@ -1,4 +1,5 @@
 import { cqlItem } from './cqlItem';
+import { cqlItemTypes } from './cqlTypes';
 import { keySpace, column } from './cqlItemTypes';
 
 export class columnFamily extends cqlItem {
@@ -8,6 +9,7 @@ export class columnFamily extends cqlItem {
     constructor(keyspace: keySpace, columnFamilyName: string) {
         super(columnFamilyName);
         this.Keyspace = keyspace;
+        this.cqlItemType = cqlItemTypes.columnFamily;
         this.Columns = [];
     }
 }

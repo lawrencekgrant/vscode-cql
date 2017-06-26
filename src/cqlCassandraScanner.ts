@@ -4,11 +4,17 @@ import cqlCompletionItems = require("./cqlCompletionItems");
 
 import { keySpace, columnFamily, column } from "./types/cqlItemTypes";
 
-export function registerScanCommand(): vscode.Disposable {
+let afterScanComplete = null;
+
+export function registerScanCommand(afterScanComplete?: Function): vscode.Disposable {
     return vscode.commands.registerCommand("cql.scan", () => {
         let scanner = new CqlCassandraScanner();
         scanner.Scan()
-            .then(() => console.log("Cassandra scan complete."));
+            .then(() =>{
+                console.log("About to run post scan.");
+                afterScanComplete();
+                console.log("Cassandra scan complete.")
+            });
         console.log("Cassandra scan started.");
     });
 }
@@ -16,7 +22,9 @@ export function registerScanCommand(): vscode.Disposable {
 export function executeScan(): Thenable<any> {
     return new Promise((resolve) => {
         vscode.commands.executeCommand("cql.scan")
-            .then(() => {resolve(); });
+            .then(() => {
+                resolve(); 
+            });
     });
 }
 

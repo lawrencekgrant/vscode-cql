@@ -2,12 +2,14 @@ import * as vscode from 'vscode';
 import { cqlItem } from './types/cqlItem';
 import { cqlTreeItem } from './cqlTreeItem';
 import { cqlItemTypes } from './types/cqlTypes';
+import { scannedKeyspaces, scannedTables, scannedColumns } from './cqlCompletionItems';
 
 export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<cqlTreeItem | undefined> = new vscode.EventEmitter<cqlTreeItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<cqlTreeItem | undefined> = this._onDidChangeTreeData.event;
 
     constructor(private workspaceRoot: string) {
+        this.getChildren(null);
     }
 
     refresh() : void {
@@ -19,7 +21,7 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
     }
 
     getChildren(element?: cqlTreeItem): Thenable<cqlTreeItem[]> {
-        if(!this.workspaceRoot) {
+        if(!scannedKeyspaces) {
             vscode.window.showInformationMessage('No Cassandra data found.');
             return Promise.resolve([]);
         }
@@ -28,21 +30,43 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
             if(element) {
                 resolve(this.getDependentItems(element.item))
             } else {
-
+                let keyspaceItems = new Array<cqlTreeItem>();
+                scannedKeyspaces.forEach(itm=> {
+                    let newTreeItem = new cqlTreeItem(itm.name, vscode.TreeItemCollapsibleState.Collapsed);
+                    newTreeItem.item = itm;
+                    keyspaceItems.push(newTreeItem);
+                });
+                resolve(keyspaceItems);
             }
-        })
+        });
     }
 
     private getDependentItems(cassandraItem: cqlItem): cqlItem[] {
+        let returnItems = [];
+
         switch(cassandraItem.cqlItemType) {
             case cqlItemTypes.column:
                 break;
             case cqlItemTypes.columnFamily:
+                scannedColumns.forEach((col)=>{
+                    if(col.columnFamily.name === cassandraItem.name) {
+                        let newTreeItem = new cqlTreeItem(col.name, vscode.TreeItemCollapsibleState.None);
+                        newTreeItem.item = col;
+                        returnItems.push(newTreeItem);
+                    }
+                });
                 break;
             case cqlItemTypes.keyspace:
+                scannedTables.forEach((itm)=> {
+                    if(itm.Keyspace.name === cassandraItem.name) {
+                        let newTreeItem = new cqlTreeItem(itm.name, vscode.TreeItemCollapsibleState.Collapsed);
+                        newTreeItem.item = itm;
+                        returnItems.push(newTreeItem);
+                    }
+                });
                 break;
         }
-
-        return new cqlItem[0];
+        
+        return returnItems;
     }
 } 

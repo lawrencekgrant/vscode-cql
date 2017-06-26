@@ -9,6 +9,7 @@ import cqlExecutor = require("./cqlExecutor");
 import cqlSymbolProvider = require("./cqlSymbolProvider");
 
 import cqlCassandraScanner = require("./cqlCassandraScanner");
+import { CqlSchemaTreeDataProvider } from './cqlSchemaTreeDataProvider';
 import cqlSchema = require("./cqlSchema");
 
 
@@ -23,8 +24,13 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(...cqlExecutor.registerAll());
     context.subscriptions.push(cqlSymbolProvider.registerDocumentSymbolProvider());
     // context.subscriptions.push(cqlSymbolProvider.registerWorkspaceSymbolProvider());
+    let cassandraTreeProvider = new CqlSchemaTreeDataProvider('cql');
+    vscode.window.registerTreeDataProvider('cqlTables', cassandraTreeProvider);
 
-    context.subscriptions.push(cqlCassandraScanner.registerScanCommand());
+    context.subscriptions.push(cqlCassandraScanner.registerScanCommand(()=>{
+        cassandraTreeProvider.getChildren();
+        cassandraTreeProvider.refresh();
+    }));
     context.subscriptions.push(...cqlSchema.registerSchemaCommand());
     console.log('Completed registration of CQL extension functionality.');
 

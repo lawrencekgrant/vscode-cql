@@ -12,11 +12,13 @@ export class cqlTreeItem extends vscode.TreeItem {
             super(label, collapsibleState);
         } 
 
+    /*
     //TODO: decide on how too implement this, resources should be shared.
     iconClass = {
         light: '',
         dark: ''
     };
-
-    contextValue = 'dependency';
+    */
+    
+    contextValue = 'cqlItem';
 }
