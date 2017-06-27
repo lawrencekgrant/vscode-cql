@@ -63,7 +63,7 @@
       "explorer": [
         {
           "id": "cqlTables",
-          "name": "Cassandra Tables"
+          "name": "Cassandra Schema"
         }
       ]
     },
