@@ -11,7 +11,6 @@ export function registerScanCommand(afterScanComplete?: Function): vscode.Dispos
         let scanner = new CqlCassandraScanner();
         scanner.Scan()
             .then(() =>{
-                console.log("About to run post scan.");
                 afterScanComplete();
                 console.log("Cassandra scan complete.")
             });
@@ -129,7 +128,7 @@ export class CqlCassandraScanner {
             return;
         }
 
-        cqlCompletionItems.scannedTables.push(columnFamily);
+        cqlCompletionItems.scannedColumnFamilies.push(columnFamily);
         columnFamily.Keyspace.ColumnFamilies.push(columnFamily); //TODO: this is crazy... come back to this..
 
         cqlCompletionItems.completionColumnFamilies.push(columnFamily.name);

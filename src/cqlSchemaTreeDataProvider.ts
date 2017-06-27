@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { cqlItem } from './types/cqlItem';
 import { cqlTreeItem } from './cqlTreeItem';
 import { cqlItemTypes } from './types/cqlTypes';
-import { scannedKeyspaces, scannedTables, scannedColumns } from './cqlCompletionItems';
+import { scannedKeyspaces, scannedColumnFamilies, scannedColumns } from './cqlCompletionItems';
 
 export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<cqlTreeItem | undefined> = new vscode.EventEmitter<cqlTreeItem | undefined>();
@@ -22,7 +22,6 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
 
     getChildren(element?: cqlTreeItem): Thenable<cqlTreeItem[]> {
         if(!scannedKeyspaces) {
-            vscode.window.showInformationMessage('No Cassandra data found.');
             return Promise.resolve([]);
         }
 
@@ -57,7 +56,7 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
                 });
                 break;
             case cqlItemTypes.keyspace:
-                scannedTables.forEach((itm)=> {
+                scannedColumnFamilies.forEach((itm)=> {
                     if(itm.Keyspace.name === cassandraItem.name) {
                         let newTreeItem = new cqlTreeItem(itm.name, vscode.TreeItemCollapsibleState.Collapsed);
                         newTreeItem.item = itm;

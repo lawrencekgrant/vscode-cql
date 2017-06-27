@@ -6,7 +6,7 @@ import { keySpace } from './types/keySpace';
 export class cqlSchemaDocumentProvider implements vscode.TextDocumentContentProvider {
     public provideTextDocumentContent(uri: vscode.Uri) {
         
-        let tables = cqlCompletionItems.scannedTables.map(table => { return `<li>${table.Keyspace.name}.${table.name}</li>`; }).join();
+        let tables = cqlCompletionItems.scannedColumnFamilies.map(table => { return `<li>${table.Keyspace.name}.${table.name}</li>`; }).join();
         let columns = cqlCompletionItems.scannedColumns.map(col => `<li>${col.columnFamily.Keyspace.name}.${col.columnFamily.name}.${col.name}</li>`).join();
 
         return `

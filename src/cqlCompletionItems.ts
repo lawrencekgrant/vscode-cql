@@ -12,7 +12,7 @@ export var completionColumnFamilies: string [] = [];
 export var completionColumns: string[] = [];
 
 export var scannedKeyspaces: keySpace[] = [];
-export var scannedTables: columnFamily[] = [];
+export var scannedColumnFamilies: columnFamily[] = [];
 export var scannedColumns: column[] = [];
 
 export function registerCompletionItemProvider(): vscode.Disposable {
