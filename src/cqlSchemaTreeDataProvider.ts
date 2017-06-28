@@ -8,8 +8,9 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
     private _onDidChangeTreeData: vscode.EventEmitter<cqlTreeItem | undefined> = new vscode.EventEmitter<cqlTreeItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<cqlTreeItem | undefined> = this._onDidChangeTreeData.event;
 
-    constructor(private workspaceRoot: string) {
-        this.getChildren(null);
+    constructor(private context: vscode.ExtensionContext) {
+        this.getChildren(undefined)
+            .then(()=>{ this.refresh()});
     }
 
     refresh() : void {
