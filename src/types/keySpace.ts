@@ -8,6 +8,7 @@ export class keySpace extends cqlItem {
     constructor(keyspaceName: string) {
         super(keyspaceName, cqlItemTypes.keyspace);
         this.name = keyspaceName;
+        this.cqlItemType = cqlItemTypes.keyspace;
         this.ColumnFamilies = [];
     }
 }

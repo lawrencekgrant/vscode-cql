@@ -7,7 +7,7 @@ import { scannedKeyspaces, scannedColumnFamilies, scannedColumns } from './cqlCo
 export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTreeItem> {
     private _onDidChangeTreeData: vscode.EventEmitter<cqlTreeItem | undefined> = new vscode.EventEmitter<cqlTreeItem | undefined>();
     readonly onDidChangeTreeData: vscode.Event<cqlTreeItem | undefined> = this._onDidChangeTreeData.event;
-
+    
     constructor(private context: vscode.ExtensionContext) {
         this.getChildren(undefined)
             .then(()=>{ this.refresh()});
@@ -32,8 +32,7 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
             } else {
                 let keyspaceItems = new Array<cqlTreeItem>();
                 scannedKeyspaces.forEach(itm=> {
-                    let newTreeItem = new cqlTreeItem(itm.name, vscode.TreeItemCollapsibleState.Collapsed);
-                    newTreeItem.item = itm;
+                    let newTreeItem = new cqlTreeItem(itm.name, vscode.TreeItemCollapsibleState.Collapsed, null, itm);
                     keyspaceItems.push(newTreeItem);
                 });
                 resolve(keyspaceItems);
@@ -41,7 +40,7 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
         });
     }
 
-    private getDependentItems(cassandraItem: cqlItem): cqlItem[] {
+    private getDependentItems(cassandraItem: cqlItem, context?: vscode.ExtensionContext): cqlItem[] {
         let returnItems = [];
 
         switch(cassandraItem.cqlItemType) {
@@ -50,8 +49,7 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
             case cqlItemTypes.columnFamily:
                 scannedColumns.forEach((col)=>{
                     if(col.columnFamily.name === cassandraItem.name) {
-                        let newTreeItem = new cqlTreeItem(col.name, vscode.TreeItemCollapsibleState.None);
-                        newTreeItem.item = col;
+                        let newTreeItem = new cqlTreeItem(col.name, vscode.TreeItemCollapsibleState.None, null, col);
                         returnItems.push(newTreeItem);
                     }
                 });
@@ -59,8 +57,7 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
             case cqlItemTypes.keyspace:
                 scannedColumnFamilies.forEach((itm)=> {
                     if(itm.Keyspace.name === cassandraItem.name) {
-                        let newTreeItem = new cqlTreeItem(itm.name, vscode.TreeItemCollapsibleState.Collapsed);
-                        newTreeItem.item = itm;
+                        let newTreeItem = new cqlTreeItem(itm.name, vscode.TreeItemCollapsibleState.Collapsed, null, itm);
                         returnItems.push(newTreeItem);
                     }
                 });

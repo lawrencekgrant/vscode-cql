@@ -4,33 +4,41 @@ import { cqlItemTypes } from './types/cqlTypes';
 import * as path from 'path';
 
 export class cqlTreeItem extends vscode.TreeItem {
-    public item: cqlItem;
 
     constructor(
         public readonly label: string,
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
-        public readonly command?: vscode.Command
+        public readonly command?: vscode.Command,
+        public readonly item?: cqlItem,
+        public readonly context?: vscode.ExtensionContext
         ) {
             super(label, collapsibleState);
         } 
 
     iconPath = {
-        light: this.item ? this.getIconPathByCqlItemType(this.item.cqlItemType, 'light') : '',
-        dark: this.item ? this.getIconPathByCqlItemType(this.item.cqlItemType, 'dark') : ''
+        light: this.getIconPathByCqlItemType(this.item.cqlItemType, 'light'),
+        dark: this.getIconPathByCqlItemType(this.item.cqlItemType, 'dark')
     };
 
     contextValue = 'cqlItem';
 
     private getIconPathByCqlItemType (itemType: cqlItemTypes, themePath) {
+        let returnPath = ''
         switch(itemType) {
             case cqlItemTypes.keyspace:
-                return path.join('images', 'icons', themePath, 'keyspace.png');
+                returnPath = path.join(__filename, '..', '..', '..', 'images', 'icons', themePath, 'keyspace.png');
+                break;
             case cqlItemTypes.columnFamily:
-                return path.join('images', 'icons', themePath, 'columnfamily.png');
+                returnPath = path.join(__filename, '..', '..', '..', 'images', 'icons', themePath, 'columnfamily.png');
+                break;
             case cqlItemTypes.column:
-                return path.join('images', 'icons', themePath, 'field.png');
+                returnPath = path.join(__filename, '..', '..', '..', 'images', 'icons', themePath, 'field.png');
+                break;
             default:
-                return '';
+                returnPath = path.join(__filename, '..', '..', '..','images', 'icons', themePath, 'field.png');
+                break;
         }
+
+        return returnPath;
     }
 }
