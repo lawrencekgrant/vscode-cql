@@ -40,7 +40,7 @@ export class CqlSchemaTreeDataProvider implements vscode.TreeDataProvider<cqlTre
         });
     }
 
-    private getDependentItems(cassandraItem: cqlItem, context?: vscode.ExtensionContext): cqlItem[] {
+    private getDependentItems(cassandraItem: cqlItem, context?: vscode.ExtensionContext): cqlTreeItem[] {
         let returnItems = [];
 
         switch(cassandraItem.cqlItemType) {
