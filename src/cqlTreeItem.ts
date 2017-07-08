@@ -10,7 +10,7 @@ export class cqlTreeItem extends vscode.TreeItem {
         public readonly collapsibleState: vscode.TreeItemCollapsibleState,
         public readonly command?: vscode.Command,
         public readonly item?: cqlItem,
-        public readonly context?: vscode.ExtensionContext
+        public readonly context?: string
         ) {
             super(label, collapsibleState);
         } 
@@ -20,7 +20,7 @@ export class cqlTreeItem extends vscode.TreeItem {
         dark: this.getIconPathByCqlItemType(this.item.cqlItemType, 'dark')
     };
 
-    contextValue = 'cqlItem';
+    contextValue = this.getContextValue(this.item);
 
     private getIconPathByCqlItemType (itemType: cqlItemTypes, themePath) {
         let returnPath = ''
@@ -40,5 +40,20 @@ export class cqlTreeItem extends vscode.TreeItem {
         }
 
         return returnPath;
+    }
+
+    private getContextValue(item? : cqlItem) {
+        if(!item) return 'cqlItem';
+
+        switch(item.cqlItemType) {
+            case cqlItemTypes.column:
+                return 'column';
+            case cqlItemTypes.columnFamily:
+                return 'columnFamily';
+            case cqlItemTypes.keyspace:
+                return 'keyspace';
+            default:
+                return 'cqlItem';
+        }
     }
 }

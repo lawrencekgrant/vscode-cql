@@ -2,7 +2,7 @@
   "name": "cql",
   "displayName": "cql",
   "description": "Cassandra CQL extension for VS Code.",
-  "version": "0.8.3",
+  "version": "0.8.5",
   "publisher": "LawrenceGrant",
   "author": {
     "name": "Lawrence Grant"
@@ -57,6 +57,10 @@
       {
         "command": "cql.schema",
         "title": "Show Schema"
+      },
+      {
+        "command": "cql.show-table",
+        "title": "Show Column Family"
       }
     ],
     "views": {
@@ -106,6 +110,12 @@
         {
           "command": "cql.schema",
           "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "cql.show-table",
+          "when": "viewItem == columnFamily"
         }
       ]
     },

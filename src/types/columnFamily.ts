@@ -12,4 +12,9 @@ export class columnFamily extends cqlItem {
         this.cqlItemType = cqlItemTypes.columnFamily;
         this.Columns = [];
     }
+
+    public GetSelectAllStatement() {
+        //TODO: Limitless... change before release.
+        return `select * from ${this.Keyspace.name}.${this.name}`;
+    }
 }

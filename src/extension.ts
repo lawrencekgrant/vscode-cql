@@ -11,6 +11,8 @@ import cqlSymbolProvider = require("./cqlSymbolProvider");
 import cqlCassandraScanner = require("./cqlCassandraScanner");
 import { CqlSchemaTreeDataProvider } from './cqlSchemaTreeDataProvider';
 import cqlSchema = require("./cqlSchema");
+import { cqlTreeItem } from './cqlTreeItem';
+import { columnFamily } from './types/columnFamily';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -26,12 +28,17 @@ export function activate(context: vscode.ExtensionContext) {
     // context.subscriptions.push(cqlSymbolProvider.registerWorkspaceSymbolProvider());
     let cassandraTreeProvider = new CqlSchemaTreeDataProvider(this.context);
     vscode.window.registerTreeDataProvider('cqlTables', cassandraTreeProvider);
-
+    //TODO: Move into TreeDataProvider
     context.subscriptions.push(cqlCassandraScanner.registerScanCommand(()=>{
         cassandraTreeProvider.getChildren();
         cassandraTreeProvider.refresh();
     }));
     context.subscriptions.push(...cqlSchema.registerSchemaCommand());
+    vscode.commands.registerCommand('cql.show-table', (treeItem: cqlTreeItem) => {
+        console.log(treeItem)
+        cqlExecutor.executeCqlStatement((treeItem.item as columnFamily).GetSelectAllStatement());
+    });
+
     console.log('Completed registration of CQL extension functionality.');
 
     console.log("Scan on startup? ", vscode.workspace.getConfiguration("cql")["scanOnStartup"]);
