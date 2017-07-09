@@ -6,7 +6,6 @@ import { scannedKeyspaces, scannedColumnFamilies, scannedColumns } from './cqlCo
 import { executeCqlStatement } from './cqlExecutor';
 
 export function RegisterCqlSchemaTreeProvider() {
-    
     //vscode.commands.registerCommand('executeShowColumnFamily', ()=>{}, args )
 }
 

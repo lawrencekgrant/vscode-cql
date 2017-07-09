@@ -28,7 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
     // context.subscriptions.push(cqlSymbolProvider.registerWorkspaceSymbolProvider());
     let cassandraTreeProvider = new CqlSchemaTreeDataProvider(this.context);
     vscode.window.registerTreeDataProvider('cqlTables', cassandraTreeProvider);
-    //TODO: Move into TreeDataProvider
+    
     context.subscriptions.push(cqlCassandraScanner.registerScanCommand(()=>{
         cassandraTreeProvider.getChildren();
         cassandraTreeProvider.refresh();

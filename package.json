@@ -18,7 +18,8 @@
     "cql",
     "cassandra",
     "query",
-    "language"
+    "language",
+    "extension"
   ],
   "readme": "README.md",
   "repository": {
@@ -101,15 +102,18 @@
       "editor/context": [
         {
           "command": "cql.execute",
-          "group": "navigation"
+          "group": "navigation",
+          "when": "resourceLangId == cql"
         },
         {
           "command": "cql.scan",
-          "group": "navigation"
+          "group": "navigation",
+          "when": "resourceLangId == cql"
         },
         {
           "command": "cql.schema",
-          "group": "navigation"
+          "group": "navigation",
+          "when": "resourceLangId == cql"
         }
       ],
       "view/item/context": [

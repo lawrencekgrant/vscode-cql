@@ -11,7 +11,8 @@ export function registerScanCommand(afterScanComplete?: Function): vscode.Dispos
         let scanner = new CqlCassandraScanner();
         scanner.Scan()
             .then(() =>{
-                afterScanComplete();
+                if(afterScanComplete)
+                    afterScanComplete();
                 console.log("Cassandra scan complete.")
             });
         console.log("Cassandra scan started.");
