@@ -14,7 +14,6 @@ export class columnFamily extends cqlItem {
     }
 
     public GetSelectAllStatement() {
-        //TODO: Limitless... change before release.
-        return `select * from ${this.Keyspace.name}.${this.name}`;
+        return `select * from ${this.Keyspace.name}.${this.name} limit 200`;
     }
 }
