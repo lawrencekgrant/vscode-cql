@@ -78,8 +78,8 @@ function showResults(error, results) {
         outputChannel.appendLine(new Date().toTimeString());
         outputChannel.show();
     } else {
-        let resultUri = "cql-result://api/results" + uuid.v4() + `?error=${!!error}`;
-        vscode.commands.executeCommand('vscode.previewHtml', resultUri, vscode.ViewColumn.Two, 'Cassandra Results')
+        let resultUri = `cql-result://api/results${uuid.v4()}?error=${!!error}`;
+        vscode.commands.executeCommand('vscode.previewHtml', resultUri, vscode.ViewColumn.Two, 'Cassandra Execution Results')
             .then((success) => {
                 //do nothing it worked already...
             }, (reason) => {

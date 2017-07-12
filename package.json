@@ -2,7 +2,7 @@
   "name": "cql",
   "displayName": "cql",
   "description": "Cassandra CQL extension for VS Code.",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "publisher": "LawrenceGrant",
   "author": {
     "name": "Lawrence Grant"
@@ -156,7 +156,7 @@
         "cql.resultStyle": {
           "type": "object",
           "default": {
-            "format": "json",
+            "format": "tabular",
             "location": "pane"
           }
         }
