@@ -51,12 +51,12 @@ export function executeCqlStatement(statement: string) {
     var statement = statement;
     console.log("statement: " + statement);
     outputChannel.show();
-    outputChannel.appendLine(`Executing statement:"${statement}" against Cassandra @  + ${cassandraAddress}:${cassandraPort}`);
+    outputChannel.appendLine(`Executing statement: "${statement}"`);
 
     client.connect((err, result) => {
         client.execute(statement.toString(), [], { prepare: true }, function (err, result) {
             console.log('executed', err, result);
-            if(err) {
+            if (err) {
                 currentResults = err;
                 outputChannel.appendLine(`Error executing statement: ${util.inspect(err)}`)
             } else {
