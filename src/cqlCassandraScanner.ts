@@ -45,16 +45,25 @@ export class CqlCassandraScanner {
     private getDefaultClient() {
         console.log("getting default cassandra client.");
         const cassandraAddress = vscode.workspace.getConfiguration("cql")["address"];
-        const cassandraPort = vscode.workspace.getConfiguration("cql")["port"];
         const cassandraConnectionOptions = vscode.workspace.getConfiguration("cql")["connection"];
+        const cloudUsername = vscode.workspace.getConfiguration("cql")["username"];
+        const cloudPassword = vscode.workspace.getConfiguration("cql")["password"];
+        const secureConnectBundle = vscode.workspace.getConfiguration("cql")["secureConnectBundle"];
 
-        let clientOptions = !!cassandraConnectionOptions 
-            ? cassandraConnectionOptions 
-            : {
+        let clientOptions:any;
+        if (cloudUsername && cloudPassword && secureConnectBundle) {
+            clientOptions = {
+                cloud: { secureConnectBundle: secureConnectBundle},
+                credentials: { username: cloudUsername, password: cloudPassword }
+            }
+        } else if (!!cassandraConnectionOptions) {
+            clientOptions = cassandraConnectionOptions;
+        } else {
+            clientOptions = {
                 contactPoints: [cassandraAddress],
                 hosts: [cassandraAddress]
             };
-
+        }
         console.log("client options:", clientOptions);
         return new cassandra.Client(clientOptions);
     }

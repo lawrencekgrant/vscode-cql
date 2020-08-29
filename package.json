@@ -126,6 +126,21 @@
     "configuration": {
       "title": "CQL extension configuration",
       "properties": {
+        "cql.secureConnectBundle": {
+          "type": "string",
+          "default": false,
+          "description": "Location of secure connect bundle"
+        },
+        "cql.username": {
+          "type": "string",
+          "default": false,
+          "description": "Cloud database username"
+        },
+        "cql.password": {
+          "type": "string",
+          "default": false,
+          "description": "Cloud database password"
+        },
         "cql.address": {
           "type": "string",
           "default": "127.0.0.1",

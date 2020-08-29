@@ -24,19 +24,27 @@ export function registerExecuteCommand() : vscode.Disposable {
 
 export function executeCqlStatement(statement: string) {
     console.log('Configuring cql statement execution.');
-        
     const cassandraAddress = vscode.workspace.getConfiguration("cql")["address"];
     const cassandraPort = vscode.workspace.getConfiguration("cql")["port"];
-
     const cassandraConnectionOptions = vscode.workspace.getConfiguration("cql")["connection"];
+    const cloudUsername = vscode.workspace.getConfiguration("cql")["username"];
+    const cloudPassword = vscode.workspace.getConfiguration("cql")["password"];
+    const secureConnectBundle = vscode.workspace.getConfiguration("cql")["secureConnectBundle"];
 
-    let clientOptions = !!cassandraConnectionOptions 
-        ? cassandraConnectionOptions 
-        : {
+    let clientOptions:any;
+    if (cloudUsername && cloudPassword && secureConnectBundle) {
+        clientOptions = {
+            cloud: { secureConnectBundle: secureConnectBundle},
+            credentials: { username: cloudUsername, password: cloudPassword }
+        }
+    } else if (!!cassandraConnectionOptions) {
+        clientOptions = cassandraConnectionOptions;
+    } else {
+        clientOptions = {
             contactPoints: [cassandraAddress],
             hosts: [cassandraAddress]
         };
-    
+    }
     console.log('Cassandra connection configuration', clientOptions);
     
     const client = new cassandra.Client(clientOptions);
