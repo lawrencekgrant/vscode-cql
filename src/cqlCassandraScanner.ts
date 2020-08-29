@@ -56,9 +56,7 @@ export class CqlCassandraScanner {
             };
 
         console.log("client options:", clientOptions);
-
-        let client = new cassandra.Client(clientOptions);
-        return client;
+        return new cassandra.Client(clientOptions);
     }
 
     public Scan(): Promise<boolean> {

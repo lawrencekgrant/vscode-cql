@@ -39,8 +39,7 @@ export function executeCqlStatement(statement: string) {
     
     console.log('Cassandra connection configuration', clientOptions);
     
-    let client = new cassandra.Client(clientOptions);
-    
+    const client = new cassandra.Client(clientOptions);
     var statement = statement;
     console.log("statement: " + statement);
     outputChannel.show();
