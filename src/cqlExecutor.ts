@@ -25,10 +25,10 @@ export function registerExecuteCommand() : vscode.Disposable {
 export function executeCqlStatement(statement: string) {
     console.log('Configuring cql statement execution.');
         
-    let cassandraAddress = vscode.workspace.getConfiguration("cql")["address"];
-    let cassandraPort = vscode.workspace.getConfiguration("cql")["port"];
+    const cassandraAddress = vscode.workspace.getConfiguration("cql")["address"];
+    const cassandraPort = vscode.workspace.getConfiguration("cql")["port"];
 
-    let cassandraConnectionOptions = vscode.workspace.getConfiguration("cql")["connection"];
+    const cassandraConnectionOptions = vscode.workspace.getConfiguration("cql")["connection"];
 
     let clientOptions = !!cassandraConnectionOptions 
         ? cassandraConnectionOptions 
