@@ -177,7 +177,7 @@
   },
   "devDependencies": {
     "@types/cassandra-driver": "^0.8.10",
-    "@types/mocha": "^2.2.32",
+    "@types/mocha": "^8.0.3",
     "@types/node": "^6.0.40",
     "mocha": "^2.3.3",
     "typescript": "^2.0.3",
