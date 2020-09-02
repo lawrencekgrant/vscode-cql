@@ -49,14 +49,14 @@ export async function executeCqlQuery(query: string) {
     const client = new cassandra.Client(clientOptions);
     console.log("query: " + query);
     outputChannel.show();
-    outputChannel.appendLine(`Executing query: "${query}"`);
+    outputChannel.appendLine(`[QUERY] ${query}`);
 
     client.connect()
         .then(() => {
             return client.execute(query.toString(), [], {prepare: true})
         })
         .then((results) => {
-            outputChannel.appendLine(JSON.stringify(results, null, 2));
+            outputChannel.appendLine(JSON.stringify(results.rows, null, 2));
         })
         .catch(err => {
             outputChannel.appendLine(`Error executing query: ${util.inspect(err)}`)
