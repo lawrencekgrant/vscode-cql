@@ -36,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(...cqlSchema.registerSchemaCommand());
     vscode.commands.registerCommand('cql.show-table', (treeItem: cqlTreeItem) => {
         console.log(treeItem)
-        cqlExecutor.executeCqlStatement((treeItem.item as columnFamily).GetSelectAllStatement());
+        cqlExecutor.executeCqlQuery((treeItem.item as columnFamily).GetSelectAllStatement());
     });
 
     console.log('Completed registration of CQL extension functionality.');

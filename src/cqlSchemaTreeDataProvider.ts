@@ -3,7 +3,7 @@ import { cqlItem } from './types/cqlItem';
 import { cqlTreeItem } from './cqlTreeItem';
 import { cqlItemTypes } from './types/cqlTypes';
 import { scannedKeyspaces, scannedColumnFamilies, scannedColumns } from './cqlCompletionItems';
-import { executeCqlStatement } from './cqlExecutor';
+import { executeCqlQuery } from './cqlExecutor';
 
 export function RegisterCqlSchemaTreeProvider() {
     //vscode.commands.registerCommand('executeShowColumnFamily', ()=>{}, args )

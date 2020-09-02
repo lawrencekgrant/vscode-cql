@@ -8,7 +8,7 @@ let afterScanComplete = null;
 
 export function registerScanCommand(afterScanComplete?: Function): vscode.Disposable {
     return vscode.commands.registerCommand("cql.scan", () => {
-        let scanner = new CqlCassandraScanner();
+        const scanner = new CqlCassandraScanner();
         scanner.Scan()
             .then(() =>{
                 if(afterScanComplete)
@@ -44,22 +44,28 @@ export class CqlCassandraScanner {
 
     private getDefaultClient() {
         console.log("getting default cassandra client.");
-        let cassandraAddress = vscode.workspace.getConfiguration("cql")["address"];
-        let cassandraPort = vscode.workspace.getConfiguration("cql")["port"];
+        const cassandraAddress = vscode.workspace.getConfiguration("cql")["address"];
+        const cassandraConnectionOptions = vscode.workspace.getConfiguration("cql")["connection"];
+        const cloudUsername = vscode.workspace.getConfiguration("cql")["username"];
+        const cloudPassword = vscode.workspace.getConfiguration("cql")["password"];
+        const secureConnectBundle = vscode.workspace.getConfiguration("cql")["secureConnectBundle"];
 
-        let cassandraConnectionOptions = vscode.workspace.getConfiguration("cql")["connection"];
-
-        let clientOptions = !!cassandraConnectionOptions 
-            ? cassandraConnectionOptions 
-            : {
+        let clientOptions:any;
+        if (cloudUsername && cloudPassword && secureConnectBundle) {
+            clientOptions = {
+                cloud: { secureConnectBundle: secureConnectBundle},
+                credentials: { username: cloudUsername, password: cloudPassword }
+            }
+        } else if (!!cassandraConnectionOptions) {
+            clientOptions = cassandraConnectionOptions;
+        } else {
+            clientOptions = {
                 contactPoints: [cassandraAddress],
                 hosts: [cassandraAddress]
             };
-
+        }
         console.log("client options:", clientOptions);
-
-        let client = new cassandra.Client(clientOptions);
-        return client;
+        return new cassandra.Client(clientOptions);
     }
 
     public Scan(): Promise<boolean> {
